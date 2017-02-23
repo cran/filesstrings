@@ -1,0 +1,70 @@
+---
+title: "Strings"
+author: "Rory Nolan"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Strings}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment = "#>")
+```
+
+# Please Read the Manual
+This package is one for which the functions are largely simple enough such that the function names well describe their purpose, so the manual is an excellent way to acquaint yourself with the package. But I made a couple of vignettes anyway.
+
+First let's load the library: 
+```{r load}
+library(filesstrings)
+```
+
+Here are some string operations that I wished were easier in R.
+
+## The *n*^th^ number in a string
+I often want to get the first, last or *n*^th^ number in a string.
+```{r nth number}
+request <- "I want the $35 scarf."
+NthNumber(request, 1)
+NthNumber("20 people want the $12 scarf.", -1)  # last number
+GetCurrency(request)
+```
+
+## Messed up file numbering
+The microscope I use numbers files with 3 numbers by default, i.e. `file001.tif`, `file002.tif` and so on. This is a problem when the automatic numbering passes 1000, whereby we have `file999.tif`, `file1000.tif`. What's the problem with this? Well, sometimes you need alphabetical order to reflect the true order of your files. These file numbers don't satisfy this requirement:
+```{r NiceNums setup}
+file.names <- c("file999.tif", "file1000.tif")
+sort(file.names)
+```
+so `file1000.tif` comes before `file999.tif` in alphabetical order. We want them to be like
+```{r NiceNums}
+NiceNums(file.names)
+```
+The function `NiceFileNums` renames all the files in an entire directory to be as we would like. It wraps `NiceNums`.
+
+## Could that be interpreted as numeric?
+Sometimes we don't want to know is something *is* numeric, we want to know if it could be considered to be numeric (or could be coerced to numeric).
+```{r CanBeNumeric}
+is.numeric(23)
+is.numeric("23")
+CanBeNumeric(23)
+CanBeNumeric("23")
+CanBeNumeric("23a")
+StrSplitByNums("23a")
+CanBeNumeric(StrSplitByNums("23a")[[1]])
+```
+
+## The name of a file without the extension
+```{r BeforeLastDot}
+BeforeLastDot("spreadsheet_92.csv")
+```
+
+## Get the *n*^th^ element of a string
+```{r}
+StrElem("abc", 2)
+StrElem("abcdefz", -1)
+```
+
+
