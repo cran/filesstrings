@@ -115,11 +115,6 @@ test_that("StringsWithPatterns works", {
   ignore.case = TRUE), toupper(c("abc", "bcd", "cde")))
 })
 
-test_that("StrReverse works", {
-  expect_equal(StrReverse("abcdef"),
-               paste(rev(c("a", "b", "c", "d", "e", "f")), collapse = ""))
-})
-
 test_that("StrAfterNth works", {
   string <- "ab..cd..de..fg..h"
   expect_equal(StrAfterNth(string, "\\.\\.", 3), "fg..h",
@@ -194,11 +189,11 @@ test_that("RemoveQuoted works", {
   expect_equal(RemoveQuoted(string), "67af")
 })
 
-test_that("MakeExtName works", {
-  expect_equal(MakeExtName("abc.csv", "csv"), "abc.csv")
-  expect_equal(MakeExtName("abc", "csv"), "abc.csv")
-  expect_equal(MakeExtName("abc.csv", "pdf"), "abc.csv.pdf")
-  expect_equal(MakeExtName("abc.csv", "pdf", replace = TRUE), "abc.pdf")
+test_that("GiveExt works", {
+  expect_equal(GiveExt("abc.csv", "csv"), "abc.csv")
+  expect_equal(GiveExt("abc", "csv"), "abc.csv")
+  expect_equal(GiveExt("abc.csv", "pdf"), "abc.csv.pdf")
+  expect_equal(GiveExt("abc.csv", "pdf", replace = TRUE), "abc.pdf")
 })
 
 test_that("SplitCamelcase works", {
