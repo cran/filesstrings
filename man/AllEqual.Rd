@@ -9,7 +9,7 @@ AllEqual(a, b = NULL)
 \arguments{
 \item{a}{A vector.}
 
-\item{b}{Either \code{NULL`` or a vector of length either 1 or}length(a)`}
+\item{b}{Either \code{NULL} or a vector of length either 1 or \code{length(a)}}
 }
 \value{
 \code{TRUE} if "equality of all" is satisfied (as detailed in
@@ -20,7 +20,9 @@ If one argument is specified, check that all elements of that argument are
 equal. If two arguments of equal length are specified, check equality of all
 of their corresponding elements. If two arguments are specified, \code{a} of
 length 1 and \code{b} of length greater than 1, check that all elements of
-\emph{b} are equal to the element in a.
+\code{b} are equal to the element in a. If two arguments are specified, \code{a} of
+length greater than 1 and \code{b} of 1, check that all elements of
+\code{a} are equal to the element in \code{b}.
 }
 \examples{
 AllEqual(1, rep(1, 3))

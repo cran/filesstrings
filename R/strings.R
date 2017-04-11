@@ -42,7 +42,7 @@ CanBeNumeric <- function(string) !is.na(suppressWarnings(as.numeric(string)))
 #' GetCurrencies("35.00 $1.14 abc5 $3.8 77")
 #' @export
 GetCurrencies <- function(string) {
-  stopifnot(is.character(string) && length(string) == 1)
+  stopifnot(is.character(string), length(string) == 1)
   ssbn <- StrSplitByNums(string, decimals = TRUE, negs = TRUE)[[1]]
   num.indices <- which(CanBeNumeric(ssbn))
   numbers <- as.numeric(ssbn[num.indices])
@@ -144,34 +144,32 @@ NiceNums <- function(strings) {
 
 #' Extract numbers (or non-numbers) from a string.
 #'
-#' `ExtractNumbers` extracts the numbers (or non-numbers) from a string
-#' where decimals are optionally allowed. `ExtractNonNumerics` extracts the
-#' bits of the string that aren't extracted by `ExtractNumbers`.
-#' `NthNumber` is a convenient wrapper for `ExtractNumbers`, allowing
-#' you to choose which number you want. Similarly `NthNonNumeric`. Please
-#' view the examples at the bottom of this page to ensure that you understand
-#' how these functions work, and their limitations. These functions are
-#' vectorised over `string`.
+#' `ExtractNumbers` extracts the numbers (or non-numbers) from a string where
+#' decimals are optionally allowed. `ExtractNonNumerics` extracts the bits of
+#' the string that aren't extracted by `ExtractNumbers`. `NthNumber` is a
+#' convenient wrapper for `ExtractNumbers`, allowing you to choose which number
+#' you want. Similarly `NthNonNumeric`. Please view the examples at the bottom
+#' of this page to ensure that you understand how these functions work, and
+#' their limitations. These functions are vectorised over `string`.
 #'
-#' `ExtractNonNumerics` uses `ExtractNumerics` to tell it what the
-#' numbers in the string are and then it extracts the bits in between those
-#' numbers. For this reason, errors you see whilst using
-#' `ExtractNonNumerics` might be errors from `ExtractNumerics`.
+#' If any part of a string contains an ambiguous number (e.g. `1.2.3` would be
+#' ambiguous if `decimals = TRUE` (but not otherwise)), the value returned for
+#' that string will be `NA`. Note that these functions do not know about
+#' scientific notation (e.g. `1e6` for 1000000).
 #'
 #' @param string A string.
-#' @param leave.as.string Do you want to return the number as a string
-#'   (`TRUE`) or as numeric (`FALSE`, the default)?
+#' @param leave.as.string Do you want to return the number as a string (`TRUE`)
+#'   or as numeric (`FALSE`, the default)?
 #' @param decimals Do you want to include the possibility of decimal numbers
 #'   (`TRUE`) or not (`FALSE`, the default).
 #' @param leading.decimals Do you want to allow a leading decimal point to be
 #'   the start of a number?
 #' @param negs Do you want to allow negative numbers? Note that double negatives
 #'   are not handled here (see the examples).
-#' @return For `ExtractNumbers` and `ExtractNonNumerics`, a list of
-#'   numeric or character vectors, one list element for each element of
-#'   `string`. For `NthNumber` and `NthNonNumeric`, a vector the
-#'   same length as `string` (as in `length(string)`, not
-#'   `nchar(string)`).
+#' @return For `ExtractNumbers` and `ExtractNonNumerics`, a list of numeric or
+#'   character vectors, one list element for each element of `string`. For
+#'   `NthNumber` and `NthNonNumeric`, a vector the same length as `string` (as
+#'   in `length(string)`, not `nchar(string)`).
 #' @examples
 #' ExtractNumbers(c("abc123abc456", "abc1.23abc456"))
 #' ExtractNumbers(c("abc1.23abc456", "abc1..23abc456"), decimals = TRUE)
@@ -191,7 +189,7 @@ NiceNums <- function(strings) {
 #' ExtractNonNumerics(c("-123abc456", "ab1c"))
 #' ExtractNonNumerics("-123abc456", negs = TRUE)
 #' ExtractNonNumerics("--123abc456", negs = TRUE)
-#' ExtractNumbers("abc1.2.3", decimals = TRUE)
+#' ExtractNumbers(c(rep("abc1.2.3", 2), "a1b2.2.3", "e5r6"), decimals = TRUE)
 #' ExtractNumbers("ab.1.2", decimals = TRUE, leading.decimals = TRUE)
 #' NthNumber("abc1.23abc456", 2)
 #' NthNumber("abc1.23abc456", 2, decimals = TRUE)
@@ -214,7 +212,14 @@ ExtractNumbers <- function(string, leave.as.string = FALSE, decimals = FALSE,
   }
   if (negs) pattern <- str_c("-?", pattern)
   numbers <- str_extract_all(string, pattern)
-  if (!leave.as.string) numbers <- lapply(numbers, as.numeric)
+  numerics <- suppressWarnings(lapply(numbers, as.numeric))
+  na.pos <- vapply(numerics, anyNA, logical(1))
+  if (leave.as.string) {
+    numbers[na.pos] <- NA_character_
+  } else {
+    numbers <- numerics
+    numbers[na.pos] <- NA_real_
+  }
   numbers
 }
 
@@ -233,7 +238,12 @@ ExtractNonNumerics <- function(string, decimals = FALSE,
     pattern <- "[0-9]+"
   }
   if (negs) pattern <- str_c("-?", pattern)
-  str_split(string, pattern) %>% StrListRemoveEmpties
+  non.numerics <- str_split(string, pattern) %>% StrListRemoveEmpties
+  numerics <- ExtractNumbers(string, decimals = decimals,
+                             leading.decimals = leading.decimals, negs = negs)
+  na.pos <- vapply(numerics, anyNA, logical(1))
+  non.numerics[na.pos] <- NA_character_
+  non.numerics
 }
 
 #' @param n The index of the number (or non-numeric) that you seek. Negative
@@ -639,7 +649,7 @@ RemoveQuoted <- function(string) {
 #'
 #' Say you want to ensure a name is fit to be the name of a csv file. Then, if
 #' the input doesn't end with ".csv", this function will tack ".csv" onto the
-#' end of it.
+#' end of it. This is vectorised over the first argument.
 #'
 #' @param string The intended file name.
 #' @param ext The intended file extension (with or without the ".").
@@ -649,18 +659,18 @@ RemoveQuoted <- function(string) {
 #' @return A string: the file name in your intended form.
 #'
 #' @examples
-#' GiveExt("abc.csv", "csv")
-#' GiveExt("abc", "csv")
+#' GiveExt(c("abc", "abc.csv"), "csv")
 #' GiveExt("abc.csv", "pdf")
 #' GiveExt("abc.csv", "pdf", replace = TRUE)
 #' @export
 GiveExt <- function(string, ext, replace = FALSE) {
-  stopifnot(is.character(string) && length(string) == 1)
-  has.dot <- str_detect(string, coll("."))
-  if (has.dot) {
-    orig.ext <- StrAfterNth(string, coll("."), -1)
-    if (orig.ext == ext) return(string)
-    if (replace) string <- BeforeLastDot(string)
+  stopifnot(is.character(string), length(ext) == 1)
+  ext <- str_match(ext, "^\\.*(.*)")[, 2]
+  if (replace) {
+    string <- tools::file_path_sans_ext(string)
+  } else {
+    correct.ext <- str_detect(string, str_c("\\.", ext, "$"))
+    string[correct.ext] <- tools::file_path_sans_ext(string[correct.ext])
   }
   str_c(string, ".", ext)
 }

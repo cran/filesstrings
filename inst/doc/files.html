@@ -12,7 +12,7 @@
 
 <meta name="author" content="Rory Nolan" />
 
-<meta name="date" content="2017-03-18" />
+<meta name="date" content="2017-04-11" />
 
 <title>Files</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Files</h1>
 <h4 class="author"><em>Rory Nolan</em></h4>
-<h4 class="date"><em>2017-03-18</em></h4>
+<h4 class="date"><em>2017-04-11</em></h4>
 
 
 
@@ -86,18 +86,23 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>I find it bizarre that base R has no <code>file.move</code>. To move a file, you have to cleverly rename it. Well, no more.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">setwd</span>(<span class="kw">tempdir</span>())
 <span class="kw">dir.create</span>(<span class="st">&quot;tmp_00&quot;</span>)
-<span class="kw">file.create</span>(<span class="st">&quot;tmp000.txt&quot;</span>)</code></pre></div>
-<pre><code>#&gt; [1] TRUE</code></pre>
+<span class="kw">file.create</span>(<span class="st">&quot;tmp000.txt&quot;</span>, <span class="st">&quot;tmp001.txt&quot;</span>)</code></pre></div>
+<pre><code>#&gt; [1] TRUE TRUE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">list.files</span>()</code></pre></div>
-<pre><code>#&gt; [1] &quot;tmp000.txt&quot; &quot;tmp_00&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">PutFilesInDir</span>(<span class="st">&quot;tmp000.txt&quot;</span>, <span class="st">&quot;tmp_00&quot;</span>)</code></pre></div>
+<pre><code>#&gt; [1] &quot;tmp000.txt&quot; &quot;tmp001.txt&quot; &quot;tmp_00&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">MoveFiles</span>(<span class="st">&quot;tmp000.txt&quot;</span>, <span class="st">&quot;tmp_00&quot;</span>)</code></pre></div>
 <pre><code>#&gt; tmp000.txt 
 #&gt;       TRUE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">list.files</span>()</code></pre></div>
-<pre><code>#&gt; [1] &quot;tmp_00&quot;</code></pre>
+<pre><code>#&gt; [1] &quot;tmp001.txt&quot; &quot;tmp_00&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">list.files</span>(<span class="st">&quot;tmp_00&quot;</span>)</code></pre></div>
 <pre><code>#&gt; [1] &quot;tmp000.txt&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">unlink</span>(<span class="st">&quot;tmp_00&quot;</span>, <span class="dt">recursive =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">PutFilesInDir</span>(<span class="st">&quot;tmp001.txt&quot;</span>, <span class="st">&quot;new_dir&quot;</span>)  <span class="co"># This function creates the directory new_dir and then puts the files in the first argument in there</span></code></pre></div>
+<pre><code>#&gt; tmp001.txt 
+#&gt;       TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">list.files</span>()</code></pre></div>
+<pre><code>#&gt; [1] &quot;new_dir&quot; &quot;tmp_00&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">unlink</span>(<span class="kw">c</span>(<span class="st">&quot;tmp_00&quot;</span>, <span class="st">&quot;new_dir&quot;</span>), <span class="dt">recursive =</span> <span class="ot">TRUE</span>)</code></pre></div>
 </div>
 <div id="delete-directories" class="section level2">
 <h2>Delete Directories</h2>
