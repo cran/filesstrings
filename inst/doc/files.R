@@ -4,30 +4,39 @@ knitr::opts_chunk$set(echo = TRUE, comment = "#>")
 ## ----load----------------------------------------------------------------
 library(filesstrings)
 
-## ---- move files---------------------------------------------------------
-setwd(tempdir())
-dir.create("tmp_00")
-file.create("tmp000.txt", "tmp001.txt")
-list.files()
-MoveFiles("tmp000.txt", "tmp_00")
-list.files()
-list.files("tmp_00")
-PutFilesInDir("tmp001.txt", "new_dir")  # This function creates the directory new_dir and then puts the files in the first argument in there
-list.files()
-unlink(c("tmp_00", "new_dir"), recursive = TRUE)
+## ----create dir----------------------------------------------------------
+dir.create("tmp_dir")
+file.create("tmp.txt")
 
-## ---- delete directory---------------------------------------------------
-setwd(tempdir())
-dir.create("tmp_00")
-list.files()
-RemoveDirs("tmp_00")
-list.files()
+## ----put a file in a dir-------------------------------------------------
+file.move("tmp.txt", "tmp_dir")
+
+## ---- remove directory---------------------------------------------------
+dir.remove("tmp_dir")
 
 ## ---- RemoveFileNameSpaces-----------------------------------------------
-setwd(tempdir())
 file.create(c("file 1.txt", "file 2.txt"))
-list.files()
-RemoveFileNameSpaces(replace.with = "_")
-list.files()
-file.remove(list.files())
+RemoveFileNameSpaces(pattern = "txt$", replace.with = "_")
+list.files(pattern = "txt$")
+file.remove(list.files(pattern = "txt$"))  # clean up
+
+## ----NiceNums setup------------------------------------------------------
+file.names <- c("file999.tif", "file1000.tif")
+sort(file.names)
+
+## ----NiceNums------------------------------------------------------------
+NiceNums(file.names)
+
+## ----BeforeLastDot-------------------------------------------------------
+BeforeLastDot("spreadsheet_92.csv")
+
+## ----add file extension 1------------------------------------------------
+GiveExt("xyz", "csv")
+
+## ----add file extension 2------------------------------------------------
+GiveExt("xyz.csv", "csv")  
+
+## ----change file extension-----------------------------------------------
+GiveExt("abc.csv", "txt")  # tack the new extension onto the end
+GiveExt("abc.csv", "txt", replace = TRUE)  # replace the current extension
 

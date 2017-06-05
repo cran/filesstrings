@@ -1,4 +1,4 @@
-#' Check if all elements are equal.
+#' A more flexible version of [all.equal].
 #'
 #' If one argument is specified, check that all elements of that argument are
 #' equal. If two arguments of equal length are specified, check equality of all
@@ -21,6 +21,7 @@
 #' AllEqual(c(1, 88))
 #' @export
 AllEqual <- function(a, b = NULL) {
+  if (is.null(a) && (!is.null(b))) return(FALSE)
   if (is.null(b[1])) {
     return(length(unique(a)) == 1)
   } else {
@@ -55,8 +56,8 @@ AllEqual <- function(a, b = NULL) {
 GroupClose <- function(vec.ascending, max.gap = 1) {
   lv <- length(vec.ascending)
   if (lv == 0) stop("vec.ascending must have length greater than zero.")
-  test <- all(vec.ascending > dplyr::lag(vec.ascending), na.rm = TRUE)
-  if (!test) stop("vec.ascending must be strictly increasing.")
+  test <- all(diff(vec.ascending) > 0)
+  if (is.na(test) || !test) stop("vec.ascending must be strictly increasing.")
   if (lv == 1) {
     return(list(vec.ascending))
   } else {

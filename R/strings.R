@@ -212,13 +212,21 @@ ExtractNumbers <- function(string, leave.as.string = FALSE, decimals = FALSE,
   }
   if (negs) pattern <- str_c("-?", pattern)
   numbers <- str_extract_all(string, pattern)
-  numerics <- suppressWarnings(lapply(numbers, as.numeric))
+  if (decimals) {
+    numerics <- suppressWarnings(lapply(numbers, as.numeric))
+  } else {
+    numerics <- suppressWarnings(lapply(numbers, as.integer))
+  }
   na.pos <- vapply(numerics, anyNA, logical(1))
   if (leave.as.string) {
     numbers[na.pos] <- NA_character_
   } else {
     numbers <- numerics
-    numbers[na.pos] <- NA_real_
+    if (decimals) {
+      numbers[na.pos] <- NA_real_
+    } else {
+      numbers[na.pos] <- NA_integer_
+    }
   }
   numbers
 }
@@ -247,12 +255,12 @@ ExtractNonNumerics <- function(string, decimals = FALSE,
 }
 
 #' @param n The index of the number (or non-numeric) that you seek. Negative
-#'   indexing is allowed i.e. `n = 1` will give you the first number (or
-#'   non-numeric) whereas `n = -1` will give you the last number (or
+#'   indexing is allowed i.e. `n = 1` (the default) will give you the first
+#'   number (or non-numeric) whereas `n = -1` will give you the last number (or
 #'   non-numeric), `n = -2` will give you the second last number and so on.
 #' @rdname ExtractNumbers
 #' @export
-NthNumber <- function(string, n, leave.as.string = FALSE, decimals = FALSE,
+NthNumber <- function(string, n = 1, leave.as.string = FALSE, decimals = FALSE,
                       leading.decimals = FALSE, negs = FALSE) {
   # this function doesn't work for strings with decimal numbers
   if (n == 0) stop("n must be a nonzero integer.")
@@ -262,13 +270,17 @@ NthNumber <- function(string, n, leave.as.string = FALSE, decimals = FALSE,
   if (leave.as.string) {
     nth.numbers
   } else {
-    as.numeric(nth.numbers)
+    if (decimals) {
+      as.numeric(nth.numbers)
+    } else {
+      as.integer(nth.numbers)
+    }
   }
 }
 
 #' @rdname ExtractNumbers
 #' @export
-NthNonNumeric <- function(string, n, decimals = FALSE,
+NthNonNumeric <- function(string, n = 1, decimals = FALSE,
                           leading.decimals = FALSE, negs = FALSE) {
   if (n == 0) stop("n must be a nonzero integer.")
   non.numerics <- ExtractNonNumerics(string, decimals = decimals, negs = negs,
@@ -392,10 +404,10 @@ StringsWithPatterns <- function(strings, patterns, ignore.case = FALSE,
 #'
 #' @param strings A character vector.
 #' @param pattern A regular expression.
-#' @param n A natural number to identify the \eqn{n}th occurrence This can be
-#'   negatively indexed, so if you wish to select the \emph{last} occurrence,
-#'   you need `n = -1`, for the second-last, you need `n = -2` and so
-#'   on.
+#' @param n A natural number to identify the \eqn{n}th occurrence (defaults to
+#'   first (`n = 1`)). This can be negatively indexed, so if you wish to select
+#'   the \emph{last} occurrence, you need `n = -1`, for the second-last, you
+#'   need `n = -2` and so on.
 #' @return A character vector of the desired strings.
 #' @examples
 #' string <- "ab..cd..de..fg..h"
@@ -405,14 +417,14 @@ StringsWithPatterns <- function(strings, patterns, ignore.case = FALSE,
 #' StrBeforeNth(string, ".", -3)
 #' StrBeforeNth(rep(string, 2), fixed("."), -3)
 #' @export
-StrAfterNth <- function(strings, pattern, n) {
+StrAfterNth <- function(strings, pattern, n = 1) {
   nth.instance.indices <- StrNthInstanceIndices(strings, pattern, n)
   mapply(str_sub, strings, nth.instance.indices[, "end"] + 1, nchar(strings))
 }
 
 #' @rdname StrAfterNth
 #' @export
-StrBeforeNth <- function(strings, pattern, n) {
+StrBeforeNth <- function(strings, pattern, n = 1) {
   nth.instance.indices <- StrNthInstanceIndices(strings, pattern, n)
   mapply(str_sub, strings, 1, nth.instance.indices[, "start"] - 1)
 }
@@ -689,9 +701,9 @@ GiveExt <- function(string, ext, replace = FALSE) {
 #' http://stackoverflow.com/questions/8406974/splitting-camelcase-in-r.
 #'
 #' @examples
-#' SplitCamelcase(c("RoryNolan", "NaomiFlagg", "DepartmentOfSillyHats"))
+#' SplitCamelCase(c("RoryNolan", "NaomiFlagg", "DepartmentOfSillyHats"))
 #' @export
-SplitCamelcase <- function(string, lower = FALSE) {
+SplitCamelCase <- function(string, lower = FALSE) {
   string <- gsub("^[^[:alnum:]]+|[^[:alnum:]]+$", "", string)
   string <- gsub("(?!^)(?=[[:upper:]])", " ", string, perl = TRUE)
   if (lower) string <- tolower(string)
