@@ -12,7 +12,7 @@
 
 <meta name="author" content="Rory Nolan" />
 
-<meta name="date" content="2017-06-05" />
+<meta name="date" content="2017-07-05" />
 
 <title>Files</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Files</h1>
 <h4 class="author"><em>Rory Nolan</em></h4>
-<h4 class="date"><em>2017-06-05</em></h4>
+<h4 class="date"><em>2017-07-05</em></h4>
 
 
 
@@ -96,10 +96,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="remove-spaces-from-file-names" class="section level2">
 <h2>Remove spaces from file names</h2>
 <p>“A space in your file name is a hole in your soul.” - Jenny Bryan</p>
-<p><code>RemoveFileNameSpaces(replace.with = &quot;_&quot;)</code> replaces them all with underscores for all files in a directory. By default, they are replaced with nothing.</p>
+<p><code>remove_filename_spaces(replacement = &quot;_&quot;)</code> replaces them all with underscores for all files in a directory. By default, they are replaced with nothing.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">file.create</span>(<span class="kw">c</span>(<span class="st">&quot;file 1.txt&quot;</span>, <span class="st">&quot;file 2.txt&quot;</span>))</code></pre></div>
 <pre><code>#&gt; [1] TRUE TRUE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">RemoveFileNameSpaces</span>(<span class="dt">pattern =</span> <span class="st">&quot;txt$&quot;</span>, <span class="dt">replace.with =</span> <span class="st">&quot;_&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">remove_filename_spaces</span>(<span class="dt">pattern =</span> <span class="st">&quot;txt$&quot;</span>, <span class="dt">replacement =</span> <span class="st">&quot;_&quot;</span>)</code></pre></div>
 <pre><code>#&gt; 2 files renamed. 0 failed to rename.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">list.files</span>(<span class="dt">pattern =</span> <span class="st">&quot;txt$&quot;</span>)</code></pre></div>
 <pre><code>#&gt; [1] &quot;file_1.txt&quot; &quot;file_2.txt&quot;</code></pre>
@@ -112,29 +112,29 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">file.names &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;file999.tif&quot;</span>, <span class="st">&quot;file1000.tif&quot;</span>)
 <span class="kw">sort</span>(file.names)</code></pre></div>
 <pre><code>#&gt; [1] &quot;file1000.tif&quot; &quot;file999.tif&quot;</code></pre>
-<p>so <code>file1000.tif</code> comes before <code>file999.tif</code> in alphabetical order. The function <code>NiceNums</code> returns the names that we’d like them to have:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">NiceNums</span>(file.names)</code></pre></div>
+<p>so <code>file1000.tif</code> comes before <code>file999.tif</code> in alphabetical order. The function <code>nice_nums()</code> returns the names that we’d like them to have:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nice_nums</span>(file.names)</code></pre></div>
 <pre><code>#&gt; [1] &quot;file0999.tif&quot; &quot;file1000.tif&quot;</code></pre>
-<p>The function <code>NiceFileNums</code> applies such renaming to all the files in an entire directory. It wraps <code>NiceNums</code>.</p>
+<p>The function <code>nice_file_nums</code> applies such renaming to all the files in an entire directory. It wraps <code>nice_nums</code>.</p>
 </div>
 <div id="the-name-of-a-file-without-the-extension" class="section level2">
 <h2>The name of a file without the extension</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">BeforeLastDot</span>(<span class="st">&quot;spreadsheet_92.csv&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">before_last_dot</span>(<span class="st">&quot;spreadsheet_92.csv&quot;</span>)</code></pre></div>
 <pre><code>#&gt; spreadsheet_92.csv 
 #&gt;   &quot;spreadsheet_92&quot;</code></pre>
 </div>
 <div id="ensure-that-a-file-name-has-a-given-extension" class="section level2">
 <h2>Ensure that a file name has a given extension</h2>
 <p>Add a file extension if needed:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">GiveExt</span>(<span class="st">&quot;xyz&quot;</span>, <span class="st">&quot;csv&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">give_ext</span>(<span class="st">&quot;xyz&quot;</span>, <span class="st">&quot;csv&quot;</span>)</code></pre></div>
 <pre><code>#&gt; [1] &quot;xyz.csv&quot;</code></pre>
 <p>If the file name has the correct extension already, it’s left alone:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">GiveExt</span>(<span class="st">&quot;xyz.csv&quot;</span>, <span class="st">&quot;csv&quot;</span>)  </code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">give_ext</span>(<span class="st">&quot;xyz.csv&quot;</span>, <span class="st">&quot;csv&quot;</span>)  </code></pre></div>
 <pre><code>#&gt; [1] &quot;xyz.csv&quot;</code></pre>
 <p>Change a file extension:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">GiveExt</span>(<span class="st">&quot;abc.csv&quot;</span>, <span class="st">&quot;txt&quot;</span>)  <span class="co"># tack the new extension onto the end</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">give_ext</span>(<span class="st">&quot;abc.csv&quot;</span>, <span class="st">&quot;txt&quot;</span>)  <span class="co"># tack the new extension onto the end</span></code></pre></div>
 <pre><code>#&gt; [1] &quot;abc.csv.txt&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">GiveExt</span>(<span class="st">&quot;abc.csv&quot;</span>, <span class="st">&quot;txt&quot;</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>)  <span class="co"># replace the current extension</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">give_ext</span>(<span class="st">&quot;abc.csv&quot;</span>, <span class="st">&quot;txt&quot;</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>)  <span class="co"># replace the current extension</span></code></pre></div>
 <pre><code>#&gt; [1] &quot;abc.txt&quot;</code></pre>
 </div>
 
@@ -145,7 +145,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

@@ -14,29 +14,29 @@ file.move("tmp.txt", "tmp_dir")
 ## ---- remove directory---------------------------------------------------
 dir.remove("tmp_dir")
 
-## ---- RemoveFileNameSpaces-----------------------------------------------
+## ---- remove_filename_spaces---------------------------------------------
 file.create(c("file 1.txt", "file 2.txt"))
-RemoveFileNameSpaces(pattern = "txt$", replace.with = "_")
+remove_filename_spaces(pattern = "txt$", replacement = "_")
 list.files(pattern = "txt$")
 file.remove(list.files(pattern = "txt$"))  # clean up
 
-## ----NiceNums setup------------------------------------------------------
+## ----nice_nums setup-----------------------------------------------------
 file.names <- c("file999.tif", "file1000.tif")
 sort(file.names)
 
-## ----NiceNums------------------------------------------------------------
-NiceNums(file.names)
+## ----nice_nums-----------------------------------------------------------
+nice_nums(file.names)
 
-## ----BeforeLastDot-------------------------------------------------------
-BeforeLastDot("spreadsheet_92.csv")
+## ----before_last_dot-----------------------------------------------------
+before_last_dot("spreadsheet_92.csv")
 
 ## ----add file extension 1------------------------------------------------
-GiveExt("xyz", "csv")
+give_ext("xyz", "csv")
 
 ## ----add file extension 2------------------------------------------------
-GiveExt("xyz.csv", "csv")  
+give_ext("xyz.csv", "csv")  
 
 ## ----change file extension-----------------------------------------------
-GiveExt("abc.csv", "txt")  # tack the new extension onto the end
-GiveExt("abc.csv", "txt", replace = TRUE)  # replace the current extension
+give_ext("abc.csv", "txt")  # tack the new extension onto the end
+give_ext("abc.csv", "txt", replace = TRUE)  # replace the current extension
 

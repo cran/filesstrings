@@ -6,42 +6,42 @@ library(filesstrings)
 
 ## ----nth number----------------------------------------------------------
 pop <- "A population of 1000 comprised of 488 dogs and 512 cats."
-NthNumber(pop, 1)
-NthNumber(pop, -1)  # last number
+nth_number(pop, 1)
+nth_number(pop, -1)  # last number
 
 ## ----all the numbers-----------------------------------------------------
-ExtractNumbers(pop)
+extract_numbers(pop)
 
 ## ----all the non-numbers-------------------------------------------------
-ExtractNonNumerics(pop)
+extract_non_numerics(pop)
 
 ## ----split by nums-------------------------------------------------------
-StrSplitByNums(pop)
+str_split_by_nums(pop)
 
 ## ----CanBeNumeric--------------------------------------------------------
 is.numeric(23)
 is.numeric("23")
-CanBeNumeric(23)
-CanBeNumeric("23")
-CanBeNumeric("23a")
+can_be_numeric(23)
+can_be_numeric("23")
+can_be_numeric("23a")
 
 ## ------------------------------------------------------------------------
-StrElem("abc", 2)
-StrElem("abcdefz", -1)  # last element
+str_elem("abc", 2)
+str_elem("abcdefz", -1)  # last element
 
 ## ----trim anything-------------------------------------------------------
-TrimAnything("__rmarkdown_", "_")
+trim_anything("__rmarkdown_", "_")
 
 ## ----count matches-------------------------------------------------------
-CountMatches(pop, " ")  # count the spaces in pop
-CountMatches("Bob and Joe went to see Bob's mother.", "Bob")
+count_matches(pop, " ")  # count the spaces in pop
+count_matches("Bob and Joe went to see Bob's mother.", "Bob")
 
 ## ----dups to sings-------------------------------------------------------
 double__spaced <- "Hello  world,  pretend  it's  Saturday  :-)"
-CountMatches(double__spaced, " ")  # count the spaces
-single_spaced <- DuplicatesToSingles(double__spaced, pattern = " ")
+count_matches(double__spaced, " ")  # count the spaces
+single_spaced <- singleize(double__spaced, pattern = " ")
 single_spaced
-CountMatches(single_spaced, " ")  # half the spaces are gone
+count_matches(single_spaced, " ")  # half the spaces are gone
 
 ## ----about a box---------------------------------------------------------
 box.infos <- c("Box 1 has weight 23kg and volume 0.3 cubic metres.",
@@ -49,21 +49,21 @@ box.infos <- c("Box 1 has weight 23kg and volume 0.3 cubic metres.",
 
 ## ----after weight--------------------------------------------------------
 library(magrittr)
-StrAfterNth(box.infos, "weight", 1)  # the bit of the string after 1st "weight"
-StrAfterNth(box.infos, "weight", 1) %>% NthNumber(1)  # 1st number after 1st "weight"
+str_after_nth(box.infos, "weight", 1)  # the bit of the string after 1st "weight"
+str_after_nth(box.infos, "weight", 1) %>% nth_number(1)  # 1st number after 1st "weight"
 
 ## ----box df, message=FALSE-----------------------------------------------
-tibble::tibble(box = NthNumber(box.infos, 1),
-        weight = StrAfterNth(box.infos, "weight", 1) %>% 
-          NthNumber(1, decimals = TRUE),
-        volume = StrAfterNth(box.infos, "volume", 1) %>% 
-          NthNumber(1, decimals = TRUE)
+tibble::tibble(box = nth_number(box.infos, 1),
+        weight = str_after_nth(box.infos, "weight", 1) %>% 
+          nth_number(1, decimals = TRUE),
+        volume = str_after_nth(box.infos, "volume", 1) %>% 
+          nth_number(1, decimals = TRUE)
 )
 
 ## ----camel case----------------------------------------------------------
 camel.names <- c("JoeBloggs", "JaneyMac")
-SplitCamelCase(camel.names)
+str_split_camel_case(camel.names)
 
 ## ----PasteCollapseListElems----------------------------------------------
-SplitCamelCase(camel.names) %>% PasteCollapseListElems(" ")
+str_split_camel_case(camel.names) %>% paste_collapse_list_elems(" ")
 
