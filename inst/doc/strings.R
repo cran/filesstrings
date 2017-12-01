@@ -6,8 +6,9 @@ library(filesstrings)
 
 ## ----nth number----------------------------------------------------------
 pop <- "A population of 1000 comprised of 488 dogs and 512 cats."
-nth_number(pop, 1)
-nth_number(pop, -1)  # last number
+first_number(pop)
+nth_number(pop, 2)
+last_number(pop)
 
 ## ----all the numbers-----------------------------------------------------
 extract_numbers(pop)
@@ -18,7 +19,7 @@ extract_non_numerics(pop)
 ## ----split by nums-------------------------------------------------------
 str_split_by_nums(pop)
 
-## ----CanBeNumeric--------------------------------------------------------
+## ----can_be_numeric------------------------------------------------------
 is.numeric(23)
 is.numeric("23")
 can_be_numeric(23)
@@ -44,26 +45,23 @@ single_spaced
 count_matches(single_spaced, " ")  # half the spaces are gone
 
 ## ----about a box---------------------------------------------------------
-box.infos <- c("Box 1 has weight 23kg and volume 0.3 cubic metres.",
+box_infos <- c("Box 1 has weight 23kg and volume 0.3 cubic metres.",
                "Box 2 has weight 20kg and volume 0.33 cubic metres.")
 
 ## ----after weight--------------------------------------------------------
 library(magrittr)
-str_after_nth(box.infos, "weight", 1)  # the bit of the string after 1st "weight"
-str_after_nth(box.infos, "weight", 1) %>% nth_number(1)  # 1st number after 1st "weight"
+str_after_nth(box_infos, "weight", 1)  # the bit of the string after 1st "weight"
+str_after_nth(box_infos, "weight", 1) %>% nth_number(1)  # 1st number after 1st "weight"
 
 ## ----box df, message=FALSE-----------------------------------------------
-tibble::tibble(box = nth_number(box.infos, 1),
-        weight = str_after_nth(box.infos, "weight", 1) %>% 
+tibble::tibble(box = nth_number(box_infos, 1),
+        weight = str_after_nth(box_infos, "weight", 1) %>% 
           nth_number(1, decimals = TRUE),
-        volume = str_after_nth(box.infos, "volume", 1) %>% 
+        volume = str_after_nth(box_infos, "volume", 1) %>% 
           nth_number(1, decimals = TRUE)
 )
 
 ## ----camel case----------------------------------------------------------
-camel.names <- c("JoeBloggs", "JaneyMac")
-str_split_camel_case(camel.names)
-
-## ----PasteCollapseListElems----------------------------------------------
-str_split_camel_case(camel.names) %>% paste_collapse_list_elems(" ")
+camel_names <- c("JoeBloggs", "JaneyMac")
+str_split_camel_case(camel_names)
 

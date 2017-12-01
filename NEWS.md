@@ -1,3 +1,25 @@
+## 2.0.0
+
+#### NEW FEATURES
+* Functions which were previously deprecated are now defunct. This brings the package completely in line with the tidyverse style.
+
+#### MINOR IMPROVEMENTS
+* `count_matches()` and `str_nth_instance_indices()` are much faster.
+* `merge_tables_on_disk()` and `paste_different_lengths()` are gone. They didn't belong.
+
+#### BUG FIXES
+* `before_last_dot()` now works in the case where the input has no dots, returning the input.
+
+
+### 1.1.0
+
+#### NEW FEATURES
+* Added `first` and `last` companions for `nth` functions.
+
+#### MINOR IMPROVEMENTS
+* Minor documentation improvements.
+
+
 ### 1.1.0
 
 #### NEW FEATURES
@@ -53,6 +75,7 @@
 
 
 ### 0.3.1
+
 #### BUG FIXES
 * Fixed problem of
 `Found no calls to: ‘R_registerRoutines’, ‘R_useDynamicSymbols’`

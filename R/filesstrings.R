@@ -1,5 +1,5 @@
 #' @import stringr
-#' @importFrom magrittr "%>%"
+#' @importFrom magrittr '%>%' '%<>%' '%T>%'
 #' @useDynLib filesstrings, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
 NULL
@@ -13,22 +13,27 @@ if (getRversion() >= "2.15.1") {
   library.dynam.unload("filesstrings", libpath)
 }
 
-#' Deprecated functions
-#'
-#' These functions have been deprecated, mostly because the naming style of the
-#' package has been changed. To figure out which function to run instead, run
-#' the deprecated function of interest and you'll get a warning message telling
-#' you which function to use instead.
-#'
-#' @name filesstrings-deprecated
-NULL
-
 #' Defunct functions
 #'
 #' These functions have been made defunct, mostly because the naming style of
-#' the package has been changed. To figure out which function to run instead,
-#' run the defunct function of interest and you'll get an error message
-#' telling you which function to use instead.
+#' the package has been changed. Some have been removed because they were not
+#' well-done.
+#'
+#' @param ... Defunct function arguments.
 #'
 #' @name filesstrings-defunct
+NULL
+
+#' `filesstrings`: handy file and string manipulation
+#'
+#' Convenient functions for moving files, deleting directories, and a variety of
+#' string operations that facilitate manipulating files and extracting
+#' information from strings.
+#'
+#' @docType package
+#' @name filesstrings
+#' @aliases filesstrings-package
+#' @references Rory Nolan and Sergi Padilla-Parra (2017). filesstrings: An R
+#'   package for file and string manipulation. The Journal of Open Source
+#'   Software, 2(14).  \doi{10.21105/joss.00260}.
 NULL

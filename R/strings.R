@@ -1,7 +1,7 @@
 #' Check if a string could be considered as numeric.
 #'
 #' After padding is removed, could the input string be considered to be numeric,
-#' i.e. could it be coerced to numeric. This function is vectorised over its one
+#' i.e. could it be coerced to numeric. This function is vectorized over its one
 #' argument.
 #' @param string A character vector.
 #' @return A character vector. `TRUE` if the argument can be considered to be numeric or `FALSE`
@@ -22,10 +22,10 @@ can_be_numeric <- function(string) !is.na(suppressWarnings(as.numeric(string)))
 #' \itemize{
 #'   \item `get_currency`
 #' takes a string and returns the currency of the first number therein. It is
-#' vectorised over string.
+#' vectorized over string.
 #'   \item `get_currencies` takes a string and returns
 #' the currencies of all of the numbers within that string. It is not
-#' vectorised. }
+#' vectorized. }
 #'
 #' These functions do not allow for leading decimal points.
 #'
@@ -46,13 +46,13 @@ can_be_numeric <- function(string) !is.na(suppressWarnings(as.numeric(string)))
 get_currencies <- function(string) {
   stopifnot(is.character(string), length(string) == 1)
   ssbn <- str_split_by_nums(string, decimals = TRUE, negs = TRUE)[[1]]
-  num.indices <- which(can_be_numeric(ssbn))
-  numbers <- as.numeric(ssbn[num.indices])
-  before.num.indices <- num.indices - 1
-  before.num.strings <- vapply(before.num.indices, function(x) {
-    ifelse(x %in% num.indices || x < 1, "", ssbn[x])
+  num_indices <- which(can_be_numeric(ssbn))
+  numbers <- as.numeric(ssbn[num_indices])
+  before_num_indices <- num_indices - 1
+  before_num_strings <- vapply(before_num_indices, function(x) {
+    ifelse(x %in% num_indices || x < 1, "", ssbn[x])
   }, character(1))
-  currencies <- str_elem(before.num.strings, -1)
+  currencies <- str_elem(before_num_strings, -1)
   tibble::tibble(currency = currencies, amount = numbers)
 }
 
@@ -61,9 +61,9 @@ get_currencies <- function(string) {
 #' get_currency(c("ab3 13", "$1"))
 #' @export
 get_currency <- function(strings) {
-  num.starts <- str_locate(strings, "[0-9]")[, "start"]
-  before.indices <- num.starts - 1
-  str_elem(strings, before.indices)
+  num_starts <- str_locate(strings, "[0-9]")[, "start"]
+  before_indices <- num_starts - 1
+  str_elem(strings, before_indices)
 }
 
 #' Remove back-to-back duplicates of a pattern in a string.
@@ -71,10 +71,10 @@ get_currency <- function(strings) {
 #' If a string contains a given pattern duplicated back-to-back a number of
 #' times, remove that duplication, leaving the pattern appearing once in that
 #' position (works if the pattern is duplicated in different parts of a string,
-#' removing all instances of duplication). This is vectorised over string and
+#' removing all instances of duplication). This is vectorized over string and
 #' pattern.
 #' @param string A character vector. The string(s) to be purged of duplicates.
-#' @param pattern A character vector. Tegular expression(s) of the pattern(s)
+#' @param pattern A character vector. Regular expression(s) of the pattern(s)
 #'   that we wish not to be duplicated.
 #' @return The string with the duplicates fixed.
 #' @examples
@@ -113,7 +113,11 @@ singleize <- function(string, pattern) {
 #' nice_nums(c("abc9def55", "abc10xyz7"))}
 #' @export
 nice_nums <- function(strings) {
-  if (!is.character(strings)) stop("str.vec must be a vector of strings")
+  checkmate::check_character(strings)
+  have_nums <- str_detect(strings, "\\d")
+  if (!all(have_nums)) {
+    stop("Some of the input strings have no numbers in them.")
+  }
   non_nums <- extract_non_numerics(strings)
   if (!all_equal(non_nums)) {
     stop("The non-number bits of the strings are different.")
@@ -152,12 +156,19 @@ nice_nums <- function(strings) {
 #' convenient wrapper for `extract_numbers`, allowing you to choose which number
 #' you want. Similarly `nth_non_numeric`. Please view the examples at the bottom
 #' of this page to ensure that you understand how these functions work, and
-#' their limitations. These functions are vectorised over `string`.
+#' their limitations. These functions are vectorized over `string`.
 #'
 #' If any part of a string contains an ambiguous number (e.g. `1.2.3` would be
 #' ambiguous if `decimals = TRUE` (but not otherwise)), the value returned for
 #' that string will be `NA`. Note that these functions do not know about
 #' scientific notation (e.g. `1e6` for 1000000).
+#'
+#' \itemize{
+#' \item `first_number(...)` is just `nth_number(..., n = 1)`.
+#' \item `last_number(...)` is just `nth_number(..., n = -1)`.
+#' \item `first_non_numeric(...)` is just `nth_non_numeric(..., n = 1)`.
+#' \item `last_non_numeric(...)` is just `nth_non_numeric(..., n = -1)`.
+#' }
 #'
 #' @param string A string.
 #' @param leave_as_string Do you want to return the number as a string (`TRUE`)
@@ -219,15 +230,15 @@ extract_numbers <- function(string, leave_as_string = FALSE, decimals = FALSE,
   } else {
     numerics <- suppressWarnings(lapply(numbers, as.integer))
   }
-  na.pos <- vapply(numerics, anyNA, logical(1))
+  na_pos <- purrr::map_lgl(numerics, anyNA)
   if (leave_as_string) {
-    numbers[na.pos] <- NA_character_
+    numbers[na_pos] <- NA_character_
   } else {
     numbers <- numerics
     if (decimals) {
-      numbers[na.pos] <- NA_real_
+      numbers[na_pos] <- NA_real_
     } else {
-      numbers[na.pos] <- NA_integer_
+      numbers[na_pos] <- NA_integer_
     }
   }
   numbers
@@ -251,7 +262,7 @@ extract_non_numerics <- function(string, decimals = FALSE,
   non_numerics <- str_split(string, pattern) %>% str_list_remove_empties
   numerics <- extract_numbers(string, decimals = decimals,
                              leading_decimals = leading_decimals, negs = negs)
-  na_pos <- vapply(numerics, anyNA, logical(1))
+  na_pos <- purrr::map_lgl(numerics, anyNA)
   non_numerics[na_pos] <- NA_character_
   non_numerics
 }
@@ -262,8 +273,8 @@ extract_non_numerics <- function(string, decimals = FALSE,
 #'   non-numeric), `n = -2` will give you the second last number and so on.
 #' @rdname extract_numbers
 #' @export
-nth_number <- function(string, n = 1, leave_as_string = FALSE, decimals = FALSE,
-                      leading_decimals = FALSE, negs = FALSE) {
+nth_number <- function(string, n, leave_as_string = FALSE, decimals = FALSE,
+                       leading_decimals = FALSE, negs = FALSE) {
   # this function doesn't work for strings with decimal numbers
   if (n == 0) stop("n must be a nonzero integer.")
   numbers <- extract_numbers(string, leave_as_string = TRUE, negs = negs,
@@ -282,17 +293,53 @@ nth_number <- function(string, n = 1, leave_as_string = FALSE, decimals = FALSE,
 
 #' @rdname extract_numbers
 #' @export
-nth_non_numeric <- function(string, n = 1, decimals = FALSE,
-                          leading_decimals = FALSE, negs = FALSE) {
-  if (n == 0) stop("n must be a nonzero integer.")
-  non.numerics <- extract_non_numerics(string, decimals = decimals, negs = negs,
-                                     leading_decimals = leading_decimals)
-  str_list_nth_elems(non.numerics, n)
+first_number <- function(string, leave_as_string = FALSE, decimals = FALSE,
+                         leading_decimals = FALSE, negs = FALSE) {
+  nth_number(string, n = 1, leave_as_string = leave_as_string,
+             decimals = decimals, leading_decimals = leading_decimals,
+             negs = negs)
 }
 
-#' Split a string by its numeric charachters.
+#' @rdname extract_numbers
+#' @export
+last_number <- function(string, leave_as_string = FALSE, decimals = FALSE,
+                         leading_decimals = FALSE, negs = FALSE) {
+  nth_number(string, n = -1, leave_as_string = leave_as_string,
+             decimals = decimals, leading_decimals = leading_decimals,
+             negs = negs)
+}
+
+#' @rdname extract_numbers
+#' @export
+nth_non_numeric <- function(string, n, decimals = FALSE,
+                            leading_decimals = FALSE, negs = FALSE) {
+  if (n == 0) stop("n must be a nonzero integer.")
+  non_numerics <- extract_non_numerics(string, decimals = decimals, negs = negs,
+                                     leading_decimals = leading_decimals)
+  str_list_nth_elems(non_numerics, n)
+}
+
+#' @rdname extract_numbers
+#' @export
+first_non_numeric <- function(string, decimals = FALSE,
+                              leading_decimals = FALSE, negs = FALSE) {
+  nth_non_numeric(string, n = 1,
+                  decimals = decimals, leading_decimals = leading_decimals,
+                  negs = negs)
+}
+
+#' @rdname extract_numbers
+#' @export
+last_non_numeric <- function(string, decimals = FALSE,
+                             leading_decimals = FALSE, negs = FALSE) {
+  nth_non_numeric(string, n = -1,
+                  decimals = decimals, leading_decimals = leading_decimals,
+                  negs = negs)
+}
+
+#' Split a string by its numeric characters.
 #'
-#' Break a string wherever you go from a numeric charachter to a non-numeric or
+#' Break a string wherever you go from a numeric character to a non-numeric or
 #' vice-versa.
 #' @inheritParams extract_numbers
 #' @examples
@@ -305,23 +352,25 @@ str_split_by_nums <- function(string, decimals = FALSE,
   nums <- extract_numbers(string, leave_as_string = TRUE, decimals = decimals,
                          leading_decimals = leading_decimals, negs = negs)
   if (all(can_be_numeric(string))) {
-    non.nums <- list(character(0))[rep(1, length(string))]
+    non_nums <- list(character(0))[rep(1, length(string))]
   } else {
-    non.nums <- extract_non_numerics(string, decimals = decimals, negs = negs,
+    non_nums <- extract_non_numerics(string, decimals = decimals, negs = negs,
                                      leading_decimals = leading_decimals)
   }
-  correct_interleave(string, non.nums, nums)
+  correct_interleave(string, non_nums, nums)
 }
 
 
-#' Extract a single character of a string, using its index.
+#' Extract a single character from a string, using its index.
+#'
+#' If the element does not exist, this function returns the empty string.
 #'
 #' @param string A string.
 #' @param index An integer. Negative indexing is allowed as in
 #'   [stringr::str_sub()].
 #' @return A one-character string.
 #' @examples
-#' str_elem("abcd", 3)
+#' str_elem(c("abcd", "xyz"), 3)
 #' str_elem("abcd", -2)
 #' @export
 str_elem <- function(string, index) {
@@ -399,10 +448,14 @@ str_with_patterns <- function(strings, patterns, ignore_case = FALSE,
 
 #' Text before or after \eqn{n}th occurrence of pattern.
 #'
-#' Extract the part of a string which is before or after the \eqn{n}th
-#' occurrence of a specified pattern, vectorised over the string. One can also
-#' choose \eqn{n} to be the \emph{last} occurrence of the pattern. See argument
-#' `n`.
+#' Extract the part of a string which is before or after the *n*th occurrence of
+#' a specified pattern, vectorized over the string. `n` can be negatively
+#' indexed. See 'Arguments'.
+#'
+#' \itemize{ \item `str_after_first(...)` is just `str_after_nth(..., n = 1)`.
+#' \item `str_after_last(...)` is just `str_after_nth(..., n = -1)`. \item
+#' `str_before_first(...)` is just `str_before_nth(..., n = 1)`. \item
+#' `str_before_last(...)` is just `str_before_nth(..., n = -1)`. }
 #'
 #' @param strings A character vector.
 #' @param pattern A regular expression.
@@ -419,33 +472,61 @@ str_with_patterns <- function(strings, patterns, ignore_case = FALSE,
 #' str_before_nth(string, ".", -3)
 #' str_before_nth(rep(string, 2), fixed("."), -3)
 #' @export
-str_after_nth <- function(strings, pattern, n = 1) {
-  nth.instance.indices <- str_nth_instance_indices(strings, pattern, n)
-  mapply(str_sub, strings, nth.instance.indices[, "end"] + 1, nchar(strings))
+str_after_nth <- function(strings, pattern, n) {
+  nth_instance_indices <- str_nth_instance_indices(strings, pattern, n)
+  mapply(str_sub, strings, nth_instance_indices[, "end"] + 1, nchar(strings))
 }
 
 #' @rdname str_after_nth
 #' @export
-str_before_nth <- function(strings, pattern, n = 1) {
-  nth.instance.indices <- str_nth_instance_indices(strings, pattern, n)
-  mapply(str_sub, strings, 1, nth.instance.indices[, "start"] - 1)
+str_after_first <- function(strings, pattern) {
+  str_after_nth(strings = strings, pattern = pattern, n = 1)
+}
+
+#' @rdname str_after_nth
+#' @export
+str_after_last <- function(strings, pattern) {
+  str_after_nth(strings = strings, pattern = pattern, n = -1)
+}
+
+#' @rdname str_after_nth
+#' @export
+str_before_nth <- function(strings, pattern, n) {
+  nth_instance_indices <- str_nth_instance_indices(strings, pattern, n)
+  mapply(str_sub, strings, 1, nth_instance_indices[, "start"] - 1)
+}
+
+#' @rdname str_after_nth
+#' @export
+str_before_first <- function(strings, pattern) {
+  str_before_nth(strings = strings, pattern = pattern, n = 1)
+}
+
+#' @rdname str_after_nth
+#' @export
+str_before_last <- function(strings, pattern) {
+  str_before_nth(strings = strings, pattern = pattern, n = -1)
 }
 
 #' Get the part of a string before the last period.
 #'
 #' This is usually used to get the part of a file name that doesn't include the
-#' file extension. It is vectorised over `string`.
+#' file extension. It is vectorized over `string`. If there is no period in
+#' `string`, the input is returned.
 #'
 #' @param string A character vector.
 #'
 #' @return A character vector.
 #'
 #' @examples
-#' before_last_dot(c("spreadsheet1.csv", "doc2.doc"))
+#' before_last_dot(c("spreadsheet1.csv", "doc2.doc", ".R"))
 #'
 #' @export
 before_last_dot <- function(string) {
-  str_before_nth(string, coll("."), -1)
+  string %>%
+    tools::file_path_sans_ext() %T>% {
+      .[(string == .) & (str_elem(., 1) == ".")] <- ""
+    }
 }
 
 #' Pad a character vector with empty strings.
@@ -485,59 +566,16 @@ extend_char_vec <- function(char_vec, extend_by = NA, length_out = NA) {
   }
 }
 
-#' Paste vectors/files with different lengths/numbers of lines.
-#'
-#' Paste character vectors of different lengths, optionally inputting the
-#' vectors as file names, which become character vectors via `readLines`.
-#' Vectors are first extended to all be the same length via
-#' [ExtendCharVec()] and are then pasted together, with no separator
-#' put in when pasting empty strings. See the examples if you don't understand.
-#'
-#' @param files A character vector of files to be read in via `readLines`
-#'   to be pasted. If you would like to use this function on vectors already in
-#'   the environment (without reading in files), pass them into this argument as
-#'   a list (see the examples).
-#' @param sep What (if anything) do you want to paste in between things as
-#'   you're pasting them together.
-#' @return A character vector.
-#' @examples
-#' paste_different_lengths(list(1:3, 1:4))
-#' paste_different_lengths(list(1:3, 1:4), sep = "sSs")
-#' setwd(tempdir())
-#' writeLines(as.character(1:3), "PasteDifferentLengths1.txt")
-#' writeLines(as.character(1:4), "PasteDifferentLengths2.txt")
-#' paste_different_lengths(list.files(pattern = "PasteDifferentLengths"),
-#'                         sep = "sSsepPp")
-#' # clean up working directory
-#' file.remove(list.files(pattern = "PasteDifferentLengths"))
-#' @export
-paste_different_lengths <- function(files, sep = "") {
-  if (is.character(files)) {
-    files <- lapply(files, readLines)
-  }
-  if (!is.list(files)) stop("files must be either a character vector or ",
-                            "a list of objects.")
-  max_length <- max(vapply(files, length, integer(1)))
-  files <- vapply(files, extend_char_vec, character(max_length),
-                  length_out = max_length)
-  if (length(sep) != 1) stop("sep must have length 1.")
-  if (sep == "") {
-    apply(files, 1, paste, collapse = "")
-  } else {
-    apply(files, 1, function(x) paste(x[as.logical(nchar(x))], collapse = sep))
-  }
-}
-
 #' Put specified strings in specified positions in an otherwise empty character
 #' vector.
 #'
-#' Create a charachter vector with a set of strings at specified positions in
-#' that charachter vector, with the rest of it taken up by empty strings.
-#' @param strings A charachter vector of the strings to put in positions
-#'   (coerced by [as.character] if not charachter already).
-#' @param positions The indices of the charachter vector to be occupied by the
+#' Create a character vector with a set of strings at specified positions in
+#' that character vector, with the rest of it taken up by empty strings.
+#' @param strings A character vector of the strings to put in positions
+#'   (coerced by [as.character] if not character already).
+#' @param positions The indices of the character vector to be occupied by the
 #'   elements of strings. Must be the same length as strings or of length 1.
-#' @return A charachter vector.
+#' @return A character vector.
 #' @examples
 #' put_in_pos(1:3, c(1, 8, 9))
 #' put_in_pos(c("Apple", "Orange", "County"), c(5, 7, 8))
@@ -568,7 +606,7 @@ put_in_pos <- function(strings, positions) {
 #'   `char = "\\\\."`).
 #' @param side Which side do you want to trim from? `"both"` is the
 #'   default, but you can also have just either `"left"` or `"right"`
-#'   (or optionally the shorthands `"b"`, `"l"` and `"r"`).
+#'   (or optionally the shortened `"b"`, `"l"` and `"r"`).
 #' @return A string.
 #' @examples
 #' trim_anything("..abcd.", ".", "left")
@@ -591,16 +629,16 @@ trim_anything <- function(string, pattern, side = "both") {
 
 #' Count the number of the matches of a pattern in a string.
 #'
-#' Vectorised over `string` and pattern.
+#' Vectorized over `string` and `pattern`.
 #'
 #' @param string A character vector.
 #' @param pattern A character vector. Pattern(s) specified like the pattern(s)
 #'   in the stringr package (e.g. look at [stringr::str_locate()]). If
 #'   this has length >1 its length must be the same as that of `string`.
 #'
-#' @return A numeric vector giving the number of matches in each string.
+#' @return An integer vector giving the number of matches in each string.
 #' @examples
-#' count_matches("abacad", "a")
+#' count_matches(c("abacad", "xyz"), "a")
 #' count_matches("2.1.0.13", ".")
 #' count_matches("2.1.0.13", stringr::coll("."))
 #' @export
@@ -614,7 +652,7 @@ count_matches <- function(string, pattern) {
     }
   }
   locations <- str_locate_all(string, pattern)
-  n_matches <- vapply(locations, nrow, integer(1)) %>% sum
+  n_matches <- intmat_list_nrows(locations)
   n_matches
 }
 
@@ -665,7 +703,7 @@ remove_quoted <- function(string) {
 #'
 #' Say you want to ensure a name is fit to be the name of a csv file. Then, if
 #' the input doesn't end with ".csv", this function will tack ".csv" onto the
-#' end of it. This is vectorised over the first argument.
+#' end of it. This is vectorized over the first argument.
 #'
 #' @param string The intended file name.
 #' @param ext The intended file extension (with or without the ".").
@@ -685,15 +723,15 @@ give_ext <- function(string, ext, replace = FALSE) {
   if (replace) {
     string <- tools::file_path_sans_ext(string)
   } else {
-    correct.ext <- str_detect(string, str_c("\\.", ext, "$"))
-    string[correct.ext] <- tools::file_path_sans_ext(string[correct.ext])
+    correct_ext <- str_detect(string, str_c("\\.", ext, "$"))
+    string[correct_ext] <- tools::file_path_sans_ext(string[correct_ext])
   }
   str_c(string, ".", ext)
 }
 
-#' Split a string based on camelcase
+#' Split a string based on CamelCase
 #'
-#' Vectorised over `string`.
+#' Vectorized over `string`.
 #'
 #' @param string A character vector.
 #' @param lower Do you want the output to be all lower case (or as is)?
@@ -717,28 +755,60 @@ str_split_camel_case <- function(string, lower = FALSE) {
 #' Get the indices of the \eqn{n}th instance of a pattern.
 #'
 #' The \eqn{n}th instance of an pattern will cover a series of character
-#' indices. This function tells you which indices those are.
+#' indices. These functions tell you which indices those are.
 #'
-#' @param strings A character vector.
+#' \itemize{ \item `str_first_instance_indices(...)` is just
+#' `str_nth_instance_indices(..., n = 1)`. \item
+#' `str_last_instance_indices(...)` is just `str_nth_instance_indices(..., n =
+#' -1)`. }
+#'
+#' @param string A character vector. These functions are vectorized over this
+#'   argument.
 #' @param pattern A character vector. Pattern(s) specified like the pattern(s)
-#'   in the stringr package (e.g. look at [stringr::str_locate()]). If
-#'   this has length >1 its length must be the same as that of `string`.
+#'   in the `stringr`` package (e.g. look at [stringr::str_locate()]). If this
+#'   has length >1 its length must be the same as that of `string`.
 #' @param n Then \eqn{n} for the \eqn{n}th instance of the pattern.
 #'
-#' @return A two-column matrix. The \eqn{i}th row of this matrix gives the start and end indices of the \eqn{n}th instance of `pattarn` in the \emph{i}th element of `strings`.
+#' @return A two-column matrix. The \eqn{i}th row of this matrix gives the start
+#'   and end indices of the \eqn{n}th instance of `pattern` in the \eqn{i}th
+#'   element of `string`.
 #'
 #' @examples
 #' str_nth_instance_indices(c("abcdabcxyz", "abcabc"), "abc", 2)
 #'
 #' @export
-str_nth_instance_indices <- function(strings, pattern, n) {
-  instances <- str_locate_all(strings, pattern)
-  instances %>% vapply(function(x, n) {
-    l <- length(x)
-    if (n < 0) n <- nrow(x) + n + 1
-    if (n < 1 || n > l) {
-      stop("There aren't n instances of pattern in one or more of the strings.")
-    }
-    x[n, ]
-  }, integer(2), n) %>% t
+str_nth_instance_indices <- function(string, pattern, n) {
+  n %<>% as.integer()
+  if (n == 0) stop("'n' cannot be zero.")
+  instances <- str_locate_all(string, pattern)
+  n_instances <- lengths(instances) / 2
+  bad <- n_instances < abs(n)
+  if (any(bad)) {
+    first_bad <- match(T, bad)
+    stop("There aren't ", abs(n),
+         " instances of pattern in one or more of the strings. ",
+         "The first such bad string is string ", first_bad, ": '",
+         string[first_bad], "' which has ", n_instances[first_bad],
+         " instances.")
+  }
+  l <- length(string)
+  if (n > 0) {
+    n %<>% rep(l)
+  } else {
+    n <- n_instances + n + 1
+  }
+  intmat_list_bind_nth_rows(instances, n - 1) %>%
+    magrittr::set_colnames(c("start", "end"))
+}
+
+#' @rdname str_nth_instance_indices
+#' @export
+str_first_instance_indices <- function(string, pattern) {
+  str_nth_instance_indices(string = string, pattern = pattern, n = 1)
+}
+
+#' @rdname str_nth_instance_indices
+#' @export
+str_last_instance_indices <- function(string, pattern) {
+  str_nth_instance_indices(string = string, pattern = pattern, n = -1)
 }

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Rory Nolan" />
 
-<meta name="date" content="2017-07-05" />
+<meta name="date" content="2017-12-01" />
 
 <title>Strings</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Strings</h1>
 <h4 class="author"><em>Rory Nolan</em></h4>
-<h4 class="date"><em>2017-07-05</em></h4>
+<h4 class="date"><em>2017-12-01</em></h4>
 
 
 
@@ -80,9 +80,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2>The <em>n</em><sup>th</sup> number in a string</h2>
 <p>I often want to get the first, last or <em>n</em><sup>th</sup> number in a string.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pop &lt;-<span class="st"> &quot;A population of 1000 comprised of 488 dogs and 512 cats.&quot;</span>
-<span class="kw">nth_number</span>(pop, <span class="dv">1</span>)</code></pre></div>
+<span class="kw">first_number</span>(pop)</code></pre></div>
 <pre><code>#&gt; [1] 1000</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nth_number</span>(pop, <span class="op">-</span><span class="dv">1</span>)  <span class="co"># last number</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nth_number</span>(pop, <span class="dv">2</span>)</code></pre></div>
+<pre><code>#&gt; [1] 488</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">last_number</span>(pop)</code></pre></div>
 <pre><code>#&gt; [1] 512</code></pre>
 </div>
 <div id="all-the-numbers-in-a-string" class="section level2">
@@ -108,7 +110,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="could-that-be-interpreted-as-numeric" class="section level2">
 <h2>Could that be interpreted as numeric?</h2>
-<p>Sometimes we don’t want to know is something <em>is</em> numeric, we want to know if it could be considered to be numeric (or could be coerced to numeric). For this, there’s <code>CanBeNumeric()</code>.</p>
+<p>Sometimes we don’t want to know is something <em>is</em> numeric, we want to know if it could be considered to be numeric (or could be coerced to numeric). For this, there’s <code>can_be_numeric()</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.numeric</span>(<span class="dv">23</span>)</code></pre></div>
 <pre><code>#&gt; [1] TRUE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.numeric</span>(<span class="st">&quot;23&quot;</span>)</code></pre></div>
@@ -155,22 +157,22 @@ single_spaced</code></pre></div>
 <div id="the-bit-of-a-string-after-the-nth-appearance-of-a-pattern" class="section level2">
 <h2>The bit of a string after the <em>n</em><sup>th</sup> appearance of a pattern</h2>
 <p>Suppose we have sentences telling us about a couple of boxes:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">box.infos &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Box 1 has weight 23kg and volume 0.3 cubic metres.&quot;</span>,
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">box_infos &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Box 1 has weight 23kg and volume 0.3 cubic metres.&quot;</span>,
                <span class="st">&quot;Box 2 has weight 20kg and volume 0.33 cubic metres.&quot;</span>)</code></pre></div>
 <p>We can get (for example) the weights of the boxes by taking the first number that appears after the word “weight”.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(magrittr)
-<span class="kw">str_after_nth</span>(box.infos, <span class="st">&quot;weight&quot;</span>, <span class="dv">1</span>)  <span class="co"># the bit of the string after 1st &quot;weight&quot;</span></code></pre></div>
+<span class="kw">str_after_nth</span>(box_infos, <span class="st">&quot;weight&quot;</span>, <span class="dv">1</span>)  <span class="co"># the bit of the string after 1st &quot;weight&quot;</span></code></pre></div>
 <pre><code>#&gt;  Box 1 has weight 23kg and volume 0.3 cubic metres. 
 #&gt;                &quot; 23kg and volume 0.3 cubic metres.&quot; 
 #&gt; Box 2 has weight 20kg and volume 0.33 cubic metres. 
 #&gt;               &quot; 20kg and volume 0.33 cubic metres.&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_after_nth</span>(box.infos, <span class="st">&quot;weight&quot;</span>, <span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">nth_number</span>(<span class="dv">1</span>)  <span class="co"># 1st number after 1st &quot;weight&quot;</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_after_nth</span>(box_infos, <span class="st">&quot;weight&quot;</span>, <span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">nth_number</span>(<span class="dv">1</span>)  <span class="co"># 1st number after 1st &quot;weight&quot;</span></code></pre></div>
 <pre><code>#&gt; [1] 23 20</code></pre>
 <p>We’d like to put all of the box information into a nice data frame. Here’s how.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tibble<span class="op">::</span><span class="kw">tibble</span>(<span class="dt">box =</span> <span class="kw">nth_number</span>(box.infos, <span class="dv">1</span>),
-        <span class="dt">weight =</span> <span class="kw">str_after_nth</span>(box.infos, <span class="st">&quot;weight&quot;</span>, <span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tibble<span class="op">::</span><span class="kw">tibble</span>(<span class="dt">box =</span> <span class="kw">nth_number</span>(box_infos, <span class="dv">1</span>),
+        <span class="dt">weight =</span> <span class="kw">str_after_nth</span>(box_infos, <span class="st">&quot;weight&quot;</span>, <span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">          </span><span class="kw">nth_number</span>(<span class="dv">1</span>, <span class="dt">decimals =</span> <span class="ot">TRUE</span>),
-        <span class="dt">volume =</span> <span class="kw">str_after_nth</span>(box.infos, <span class="st">&quot;volume&quot;</span>, <span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+        <span class="dt">volume =</span> <span class="kw">str_after_nth</span>(box_infos, <span class="st">&quot;volume&quot;</span>, <span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">          </span><span class="kw">nth_number</span>(<span class="dv">1</span>, <span class="dt">decimals =</span> <span class="ot">TRUE</span>)
 )</code></pre></div>
 <pre><code>#&gt; # A tibble: 2 x 3
@@ -182,16 +184,13 @@ single_spaced</code></pre></div>
 <div id="split-camel-case" class="section level2">
 <h2>Split camel case</h2>
 <p>Sometimes people use camel case (CamelCase) to avoid using spaces. What if we want to put the spaces back in?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">camel.names &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;JoeBloggs&quot;</span>, <span class="st">&quot;JaneyMac&quot;</span>)
-<span class="kw">str_split_camel_case</span>(camel.names)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">camel_names &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;JoeBloggs&quot;</span>, <span class="st">&quot;JaneyMac&quot;</span>)
+<span class="kw">str_split_camel_case</span>(camel_names)</code></pre></div>
 <pre><code>#&gt; [[1]]
 #&gt; [1] &quot;Joe&quot;    &quot;Bloggs&quot;
 #&gt; 
 #&gt; [[2]]
 #&gt; [1] &quot;Janey&quot; &quot;Mac&quot;</code></pre>
-<p>Now we have a list where each list element is a vector of a person’s names. To put them together with spaces in between, we can use <code>paste_collapse_list_elems()</code>. This is an efficient way to perform <code>paste(..., collapse = ...)</code> on each element of a list.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_split_camel_case</span>(camel.names) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">paste_collapse_list_elems</span>(<span class="st">&quot; &quot;</span>)</code></pre></div>
-<pre><code>#&gt; [1] &quot;Joe Bloggs&quot; &quot;Janey Mac&quot;</code></pre>
 </div>
 
 

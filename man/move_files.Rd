@@ -21,7 +21,7 @@ Invisibly, a logical vector with a \code{TRUE} for each time the operation
 succeeded and a \code{FALSE} for every fail.
 }
 \description{
-Move specified files into specified directories.
+Move specified files into specified directories
 }
 \details{
 If there are \eqn{n} files, there must be either \eqn{1} or \eqn{n}
@@ -31,4 +31,11 @@ respective directory. This function also works to move directories.
 
 If you try to move files to a directory that doesn't exist, the directory is
 first created and then the files are put inside.
+}
+\examples{
+setwd(tempdir())
+dir.create("dir")
+files <- c("1litres_1.txt", "1litres_30.txt", "3litres_5.txt")
+file.create(files)
+file.move(files, "dir")
 }
