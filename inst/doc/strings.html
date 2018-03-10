@@ -12,7 +12,7 @@
 
 <meta name="author" content="Rory Nolan" />
 
-<meta name="date" content="2018-02-09" />
+<meta name="date" content="2018-03-09" />
 
 <title>Strings</title>
 
@@ -280,13 +280,13 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Strings</h1>
 <h4 class="author"><em>Rory Nolan</em></h4>
-<h4 class="date"><em>2018-02-09</em></h4>
+<h4 class="date"><em>2018-03-09</em></h4>
 
 
 
 <p>First let’s load the library:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(filesstrings)</a></code></pre></div>
-<section id="the-nth-number-in-a-string" class="level2">
+<div id="the-nth-number-in-a-string" class="section level2">
 <h2>The <em>n</em><sup>th</sup> number in a string</h2>
 <p>I often want to get the first, last or <em>n</em><sup>th</sup> number in a string.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">pop &lt;-<span class="st"> &quot;A population of 1000 comprised of 488 dogs and 512 cats.&quot;</span></a>
@@ -296,29 +296,29 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <pre><code>#&gt; [1] 488</code></pre>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">last_number</span>(pop)</a></code></pre></div>
 <pre><code>#&gt; [1] 512</code></pre>
-</section>
-<section id="all-the-numbers-in-a-string" class="level2">
+</div>
+<div id="all-the-numbers-in-a-string" class="section level2">
 <h2>All the numbers in a string</h2>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">extract_numbers</span>(pop)</a></code></pre></div>
 <pre><code>#&gt; [[1]]
 #&gt; [1] 1000  488  512</code></pre>
-</section>
-<section id="all-the-non-numbers-in-a-string" class="level2">
+</div>
+<div id="all-the-non-numbers-in-a-string" class="section level2">
 <h2>All the non-numbers in a string</h2>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">extract_non_numerics</span>(pop)</a></code></pre></div>
 <pre><code>#&gt; [[1]]
 #&gt; [1] &quot;A population of &quot; &quot; comprised of &quot;   &quot; dogs and &quot;      
 #&gt; [4] &quot; cats.&quot;</code></pre>
-</section>
-<section id="split-strings-by-numbers" class="level2">
+</div>
+<div id="split-strings-by-numbers" class="section level2">
 <h2>Split strings by numbers</h2>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">str_split_by_nums</span>(pop)</a></code></pre></div>
 <pre><code>#&gt; [[1]]
 #&gt; [1] &quot;A population of &quot; &quot;1000&quot;             &quot; comprised of &quot;  
 #&gt; [4] &quot;488&quot;              &quot; dogs and &quot;       &quot;512&quot;             
 #&gt; [7] &quot; cats.&quot;</code></pre>
-</section>
-<section id="could-that-be-interpreted-as-numeric" class="level2">
+</div>
+<div id="could-that-be-interpreted-as-numeric" class="section level2">
 <h2>Could that be interpreted as numeric?</h2>
 <p>Sometimes we don’t want to know is something <em>is</em> numeric, we want to know if it could be considered to be numeric (or could be coerced to numeric). For this, there’s <code>can_be_numeric()</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">is.numeric</span>(<span class="dv">23</span>)</a></code></pre></div>
@@ -331,28 +331,28 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <pre><code>#&gt; [1] TRUE</code></pre>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">can_be_numeric</span>(<span class="st">&quot;23a&quot;</span>)</a></code></pre></div>
 <pre><code>#&gt; [1] FALSE</code></pre>
-</section>
-<section id="get-the-nth-element-of-a-string" class="level2">
+</div>
+<div id="get-the-nth-element-of-a-string" class="section level2">
 <h2>Get the <em>n</em><sup>th</sup> element of a string</h2>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">str_elem</span>(<span class="st">&quot;abc&quot;</span>, <span class="dv">2</span>)</a></code></pre></div>
 <pre><code>#&gt; [1] &quot;b&quot;</code></pre>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">str_elem</span>(<span class="st">&quot;abcdefz&quot;</span>, <span class="dv">-1</span>)  <span class="co"># last element</span></a></code></pre></div>
 <pre><code>#&gt; [1] &quot;z&quot;</code></pre>
-</section>
-<section id="trim-anything-not-just-whitespace" class="level2">
+</div>
+<div id="trim-anything-not-just-whitespace" class="section level2">
 <h2>Trim anything (not just whitespace)</h2>
 <p><code>stringr</code>’s <code>str_trim</code> just trims whitespace. What if you want to trim something else? Now you can <code>trim_anything()</code>.</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw">trim_anything</span>(<span class="st">&quot;__rmarkdown_&quot;</span>, <span class="st">&quot;_&quot;</span>)</a></code></pre></div>
 <pre><code>#&gt; [1] &quot;rmarkdown&quot;</code></pre>
-</section>
-<section id="count-the-number-of-matches-of-a-pattern-in-a-string" class="level2">
+</div>
+<div id="count-the-number-of-matches-of-a-pattern-in-a-string" class="section level2">
 <h2>Count the number of matches of a pattern in a string</h2>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw">count_matches</span>(pop, <span class="st">&quot; &quot;</span>)  <span class="co"># count the spaces in pop</span></a></code></pre></div>
 <pre><code>#&gt; [1] 10</code></pre>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">count_matches</span>(<span class="st">&quot;Bob and Joe went to see Bob's mother.&quot;</span>, <span class="st">&quot;Bob&quot;</span>)</a></code></pre></div>
 <pre><code>#&gt; [1] 2</code></pre>
-</section>
-<section id="turn-duplicates-of-a-pattern-into-singles" class="level2">
+</div>
+<div id="turn-duplicates-of-a-pattern-into-singles" class="section level2">
 <h2>Turn duplicates of a pattern into singles</h2>
 <p>Suppose we want to remove double spacing:</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">double__spaced &lt;-<span class="st"> &quot;Hello  world,  pretend  it's  Saturday  :-)&quot;</span></a>
@@ -363,8 +363,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <pre><code>#&gt; [1] &quot;Hello world, pretend it's Saturday :-)&quot;</code></pre>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">count_matches</span>(single_spaced, <span class="st">&quot; &quot;</span>)  <span class="co"># half the spaces are gone</span></a></code></pre></div>
 <pre><code>#&gt; [1] 5</code></pre>
-</section>
-<section id="the-bit-of-a-string-after-the-nth-appearance-of-a-pattern" class="level2">
+</div>
+<div id="the-bit-of-a-string-after-the-nth-appearance-of-a-pattern" class="section level2">
 <h2>The bit of a string after the <em>n</em><sup>th</sup> appearance of a pattern</h2>
 <p>Suppose we have sentences telling us about a couple of boxes:</p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1">box_infos &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Box 1 has weight 23kg and volume 0.3 cubic metres.&quot;</span>,</a>
@@ -388,10 +388,10 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <pre><code>#&gt; # A tibble: 2 x 3
 #&gt;     box weight volume
 #&gt;   &lt;int&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-#&gt; 1     1   23.0  0.300
-#&gt; 2     2   20.0  0.330</code></pre>
-</section>
-<section id="split-camel-case" class="level2">
+#&gt; 1     1    23.  0.300
+#&gt; 2     2    20.  0.330</code></pre>
+</div>
+<div id="split-camel-case" class="section level2">
 <h2>Split camel case</h2>
 <p>Sometimes people use camel case (CamelCase) to avoid using spaces. What if we want to put the spaces back in?</p>
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">camel_names &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;JoeBloggs&quot;</span>, <span class="st">&quot;JaneyMac&quot;</span>)</a>
@@ -401,7 +401,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 #&gt; 
 #&gt; [[2]]
 #&gt; [1] &quot;Janey&quot; &quot;Mac&quot;</code></pre>
-</section>
+</div>
 
 
 
