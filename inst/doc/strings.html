@@ -12,7 +12,7 @@
 
 <meta name="author" content="Rory Nolan" />
 
-<meta name="date" content="2018-03-09" />
+<meta name="date" content="2018-04-18" />
 
 <title>Strings</title>
 
@@ -280,7 +280,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Strings</h1>
 <h4 class="author"><em>Rory Nolan</em></h4>
-<h4 class="date"><em>2018-03-09</em></h4>
+<h4 class="date"><em>2018-04-18</em></h4>
 
 
 
@@ -372,10 +372,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>We can get (for example) the weights of the boxes by taking the first number that appears after the word “weight”.</p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw">library</span>(magrittr)</a>
 <a class="sourceLine" id="cb41-2" data-line-number="2"><span class="kw">str_after_nth</span>(box_infos, <span class="st">&quot;weight&quot;</span>, <span class="dv">1</span>)  <span class="co"># the bit of the string after 1st &quot;weight&quot;</span></a></code></pre></div>
-<pre><code>#&gt;  Box 1 has weight 23kg and volume 0.3 cubic metres. 
-#&gt;                &quot; 23kg and volume 0.3 cubic metres.&quot; 
-#&gt; Box 2 has weight 20kg and volume 0.33 cubic metres. 
-#&gt;               &quot; 20kg and volume 0.33 cubic metres.&quot;</code></pre>
+<pre><code>#&gt; [1] &quot; 23kg and volume 0.3 cubic metres.&quot; 
+#&gt; [2] &quot; 20kg and volume 0.33 cubic metres.&quot;</code></pre>
 <div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw">str_after_nth</span>(box_infos, <span class="st">&quot;weight&quot;</span>, <span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">nth_number</span>(<span class="dv">1</span>)  <span class="co"># 1st number after 1st &quot;weight&quot;</span></a></code></pre></div>
 <pre><code>#&gt; [1] 23 20</code></pre>
 <p>We’d like to put all of the box information into a nice data frame. Here’s how.</p>

@@ -1,3 +1,6 @@
+#include <stdexcept>
+#include <string>
+
 #include <Rcpp.h>
 
 using namespace Rcpp;
@@ -252,14 +255,14 @@ int match_arg_index1(std::string arg, CharacterVector choices) {
   std::size_t n_choices = choices.size();
   LogicalVector is_pre(n_choices);
   int first_true = -1;
-  for (int i = 0; i != n_choices; ++i)
+  for (std::size_t i = 0; i != n_choices; ++i)
     is_pre[i] = is_prefix(std::string(choices[i]), arg);
   int n_matches = count_if(is_pre, first_true);
   if (n_matches == 0) {  // no match
     return -1;
   } else if (n_matches > 1) {  // ambiguity
     std::size_t arg_len = arg.length();
-    for (int i = 0; i != n_choices; ++i) {
+    for (std::size_t i = 0; i != n_choices; ++i) {
       std::string choice(choices[i]);
       if (arg_len == choice.length()) {
         if (std::equal(arg.begin(), arg.end(), choice.begin()))
@@ -278,5 +281,79 @@ IntegerVector match_arg_index(CharacterVector arg, CharacterVector choices) {
   IntegerVector out(arg_sz);
   for (int i = 0; i != arg_sz; ++i)
     out[i] = match_arg_index1(std::string(arg[i]), choices);
+  return out;
+}
+
+// [[Rcpp::export]]
+List int_lst_first_col(List x) {
+  std::size_t n = x.size();
+  List out(n);
+  for (std::size_t i = 0; i != n; ++i) {
+    IntegerMatrix x_i = as<IntegerMatrix>(x[i]);
+    out[i] = x_i.column(0);
+  }
+  return out;
+}
+
+// [[Rcpp::export]]
+List str_elems(StringVector strings, List locations) {
+  std::size_t n = strings.size();
+  if (locations.size() != n) {
+    throw std::invalid_argument("`strings` and `locations` must have the "
+                                "same length.");
+  }
+  List out(n);
+  for (std::size_t i = 0; i != n; ++i) {
+    IntegerVector locations_i = locations[i];
+    std::size_t m = locations_i.size();
+    CharacterVector out_i(m);
+    for (std::size_t j = 0; j != m; ++j) {
+      out_i[j] = std::string(1, strings[i][locations_i[j] - 1]);
+    }
+    out[i] = out_i;
+  }
+  return out;
+}
+
+// [[Rcpp::export]]
+List lst_df_pos_brace(List positions, List braces) {
+  std::size_t n = positions.size();
+  if (braces.size() != n) {
+    throw std::invalid_argument("`positions` and `braces` must have the "
+                                  "same length.");
+  }
+  List out(n);
+  for (std::size_t i = 0; i != n; ++i) {
+    out[i] = DataFrame::create(_["position"] = positions[i],
+                               _["brace"] = braces[i]);
+  }
+  return out;
+}
+
+NumericVector char_to_num(CharacterVector x) {
+  std::size_t n = x.size();
+  if (n == 0) return NumericVector(0);
+  NumericVector out(n);
+  for (std::size_t i = 0; i != n; ++i) {
+    std::string x_i(x[i]);
+    double number = NA_REAL;
+    try {
+      std::size_t pos;
+      number = std::stod(x_i, &pos);
+      number = ((pos == x_i.size()) ? number : NA_REAL);
+    } catch (const std::invalid_argument& e) {
+      ;  // do nothing
+    }
+    out[i] = number;
+  }
+  return out;
+}
+
+// [[Rcpp::export]]
+List lst_char_to_num(List x) {
+  std::size_t n = x.size();
+  List out(n);
+  for (std::size_t i = 0; i != n; ++i)
+    out[i] = char_to_num(x[i]);
   return out;
 }

@@ -1,7 +1,7 @@
 Package: filesstrings
 Type: Package
 Title: Handy File and String Manipulation
-Version: 2.1.0
+Version: 2.2.0
 Authors@R: c(person("Rory", "Nolan", email = "rorynoolan@gmail.com", 
                     role = c("aut", "cre", "cph")),
              person("Sergi", "Padilla-Parra", email = "spadilla@well.ox.ac.uk", 
@@ -17,14 +17,15 @@ Imports: tibble, Rcpp, magrittr, tools, ore, matrixStats, purrr,
         checkmate
 RoxygenNote: 6.0.1
 Suggests: testthat, covr, knitr, rmarkdown
-LinkingTo: Rcpp
+LinkingTo: Rcpp, BH
 Depends: stringr
+SystemRequirements: C++11
 URL: https://www.github.com/rorynolan/filesstrings
 BugReports: https://www.github.com/rorynolan/filesstrings/issues
 VignetteBuilder: knitr
 NeedsCompilation: yes
-Packaged: 2018-03-09 11:13:19 UTC; rnolan
+Packaged: 2018-04-18 11:01:48 UTC; rnolan
 Author: Rory Nolan [aut, cre, cph],
   Sergi Padilla-Parra [ths]
 Repository: CRAN
-Date/Publication: 2018-03-10 16:29:46 UTC
+Date/Publication: 2018-04-18 17:01:35 UTC
