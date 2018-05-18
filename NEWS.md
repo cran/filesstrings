@@ -1,3 +1,19 @@
+### 2.4.0
+
+#### NEW FEATURES
+* Added `nth_number_after_mth()` and friends (there are 8 friends).
+
+#### DEFUNCT
+* Defunct functions are now gone completely (as opposed to triggering a `.Defunct()` call).
+
+
+
+### 2.3.0
+
+#### MINOR IMPROVEMENTS
+* Add an `overwrite` argument to `file.move()` with default value `FALSE` to ensure that files are not accidentally overwritten.
+
+
 ### 2.2.0
 
 #### MINOR IMPROVEMENTS
