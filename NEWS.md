@@ -1,3 +1,12 @@
+### 2.5.0
+
+#### NEW FEATURES
+* Improvement to `all_equal()` and its documentation.
+
+#### BUG FIXES
+* Fix to message of `file.move()`.
+
+
 ### 2.4.0
 
 #### NEW FEATURES

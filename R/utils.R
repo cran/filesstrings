@@ -1,12 +1,17 @@
 #' A more flexible version of [all.equal] for vectors.
 #'
-#' If one argument is specified, check that all elements of that argument are
-#' equal. If two arguments of equal length are specified, check equality of all
-#' of their corresponding elements. If two arguments are specified, `a` of
-#' length 1 and `b` of length greater than 1, check that all elements of `b` are
-#' equal to the element in a. If two arguments are specified, `a` of length
-#' greater than 1 and `b` of 1, check that all elements of `a` are equal to the
-#' element in `b`.
+#' @description
+#' This function will return `TRUE` whenever [base::all.equal()]
+#' would return `TRUE`, however it will also return `TRUE` in some other cases:
+#' * If `a` is given and `b` is not, `TRUE` will be returned if all of the
+#' elements of `a` are the same.
+#' * If `a` is a scalar and `b` is a vector or array, `TRUE` will be returned
+#' if every element in `b` is equal to `a`.
+#' * If `a` is a vector or array and `b` is a scalar, `TRUE` will be returned
+#' if every element in `a` is equal to `b`.
+#'
+#' When this function does not return `TRUE`, it returns `FALSE` (unless it
+#' errors). This is unlike [base::all.equal()].
 #'
 #' @note \itemize{\item This behaviour is totally different from
 #'   [base::all.equal()]. \item There's also [dplyr::all_equal()], which is
@@ -39,22 +44,31 @@ all_equal <- function(a, b = NULL) {
                     checkmate::check_vector(b),
                     checkmate::check_list(b),
                     checkmate::check_array(b))
-  if (is.array(a)) a %<>% as.vector()
-  if (is.array(b)) b %<>% as.vector()
-  if (is.null(a) && (!is.null(b))) return(FALSE)
-  if (is.null(b[1])) {
+  if (is.array(a) && isTRUE(checkmate::check_scalar(b)))
+    b %<>% array(dim = dim(a))
+  if (is.array(b) && isTRUE(checkmate::check_scalar(a)))
+    a %<>% array(dim = dim(b))
+  if (is.null(b)) {
+    if (rlang::is_atomic(a)) return(isTRUE(all(a == a[[1]])) || all(is.na(a)))
     return(length(unique(a)) == 1)
-  } else {
-    if (length(a) == 1) {
-      if (length(b) == 0) return(FALSE)
-      a <- rep(a, length(b))
-    }
-    if (length(b) == 1) {
-      if (length(a) == 0) return(FALSE)
-      b <- rep(b, length(a))
-    }
-    return(isTRUE(all.equal(a, b)))
   }
+  if (is.array(a)) {
+    if (!is.array(b)) return(FALSE)
+    if (!all_equal(dim(a), dim(b))) return(FALSE)
+    a %<>% as.vector()
+    b %<>% as.vector()
+  }
+  if (is.array(b)) if (!is.array(a)) return(FALSE)
+  if (is.null(a) && (!is.null(b))) return(FALSE)
+  if (length(a) == 1) {
+    if (length(b) == 0) return(FALSE)
+    a <- rep(a, length(b))
+  }
+  if (length(b) == 1) {
+    if (length(a) == 0) return(FALSE)
+    b <- rep(b, length(a))
+  }
+  return(isTRUE(all.equal(a, b)))
 }
 
 #' Group together close adjacent elements of a vector.
@@ -194,7 +208,13 @@ match_arg <- function(arg, choices, index = FALSE, several_ok = FALSE,
            "    * Your `arg` '", arg[first_bad_index], "' is not a prefix of ",
            "any element of `choices`.")
     } else {
-      two_ambigs <- str_detect(choices, str_c("^", arg[first_bad_index])) %>%
+      if (ignore_case) {
+        two_ambigs <- str_detect(tolower(choices),
+                                 str_c("^", tolower(arg)[first_bad_index]))
+      } else {
+        two_ambigs <- str_detect(choices, str_c("^", arg[first_bad_index]))
+      }
+      two_ambigs %<>%
         {choices[.]} %>%
         {.[1:2]}
       stop("`arg` must be a prefix of exactly one element of `choices`.", "\n",

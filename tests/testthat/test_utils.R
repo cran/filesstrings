@@ -11,8 +11,13 @@ test_that("all_equal works", {
   expect_false(all_equal(character(0), NA))
   expect_false(all_equal(NA, character(0)))
   expect_false(all_equal(NULL, NA))
-  expect_true(all_equal(1:4, matrix(1:4, nrow = 2)))
-  expect_true(all_equal(matrix(1:4, nrow = 2), 1:4))
+  expect_true(all_equal(matrix(1:4, nrow = 2), matrix(1:4, nrow = 2)))
+  expect_false(all_equal(array(1, dim = c(2, 2, 2)), 99))
+  expect_false(all_equal(99, array(1, dim = c(2, 2, 2))))
+  expect_false(all_equal(array(1, dim = c(2, 2, 2)),
+                         array(1, dim = c(3, 3, 3))))
+  expect_false(all_equal(matrix(1:4, nrow = 2), 1:3))
+  expect_false(all_equal(1:3, matrix(1:4, nrow = 2)))
 })
 
 test_that("group_close works", {
@@ -44,7 +49,9 @@ test_that("match_arg() works", {
                          several_ok = TRUE),
                c(3, 1))
   choices %<>% c("Avocados", "Apricots")
-  expect_error(match_arg("A", choices),
+  expect_error(match_arg("A", choices, ignore_case = FALSE),
+               "prefix of two.+Apples.+Avocados.+")
+  expect_error(match_arg("a", choices, ignore_case = TRUE),
                "prefix of two.+Apples.+Avocados.+")
   expect_error(match_arg(c("A", "a"), choices),
                "arg.+must have length 1.+use.+several_ok = TRUE")
