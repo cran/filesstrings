@@ -40,27 +40,27 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// str_list_nth_elems
-CharacterVector str_list_nth_elems(List char_list, int n);
-RcppExport SEXP _filesstrings_str_list_nth_elems(SEXP char_listSEXP, SEXP nSEXP) {
+// str_list_nth_elems_
+CharacterVector str_list_nth_elems_(List char_list, IntegerVector n);
+RcppExport SEXP _filesstrings_str_list_nth_elems_(SEXP char_listSEXP, SEXP nSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type char_list(char_listSEXP);
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    rcpp_result_gen = Rcpp::wrap(str_list_nth_elems(char_list, n));
+    Rcpp::traits::input_parameter< IntegerVector >::type n(nSEXP);
+    rcpp_result_gen = Rcpp::wrap(str_list_nth_elems_(char_list, n));
     return rcpp_result_gen;
 END_RCPP
 }
-// num_list_nth_elems
-NumericVector num_list_nth_elems(List num_list, int n);
-RcppExport SEXP _filesstrings_num_list_nth_elems(SEXP num_listSEXP, SEXP nSEXP) {
+// num_list_nth_elems_
+NumericVector num_list_nth_elems_(List num_list, IntegerVector n);
+RcppExport SEXP _filesstrings_num_list_nth_elems_(SEXP num_listSEXP, SEXP nSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type num_list(num_listSEXP);
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    rcpp_result_gen = Rcpp::wrap(num_list_nth_elems(num_list, n));
+    Rcpp::traits::input_parameter< IntegerVector >::type n(nSEXP);
+    rcpp_result_gen = Rcpp::wrap(num_list_nth_elems_(num_list, n));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -76,29 +76,29 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// correct_interleave_helper
-CharacterVector correct_interleave_helper(std::string orig, CharacterVector strings1, CharacterVector strings2);
-RcppExport SEXP _filesstrings_correct_interleave_helper(SEXP origSEXP, SEXP strings1SEXP, SEXP strings2SEXP) {
+// interleave_correctly_vec
+CharacterVector interleave_correctly_vec(std::string orig, CharacterVector strings1, CharacterVector strings2);
+RcppExport SEXP _filesstrings_interleave_correctly_vec(SEXP origSEXP, SEXP strings1SEXP, SEXP strings2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::string >::type orig(origSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type strings1(strings1SEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type strings2(strings2SEXP);
-    rcpp_result_gen = Rcpp::wrap(correct_interleave_helper(orig, strings1, strings2));
+    rcpp_result_gen = Rcpp::wrap(interleave_correctly_vec(orig, strings1, strings2));
     return rcpp_result_gen;
 END_RCPP
 }
-// correct_interleave
-List correct_interleave(CharacterVector orig, List strings1, List strings2);
-RcppExport SEXP _filesstrings_correct_interleave(SEXP origSEXP, SEXP strings1SEXP, SEXP strings2SEXP) {
+// interleave_correctly
+List interleave_correctly(CharacterVector orig, List strings1, List strings2);
+RcppExport SEXP _filesstrings_interleave_correctly(SEXP origSEXP, SEXP strings1SEXP, SEXP strings2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< CharacterVector >::type orig(origSEXP);
     Rcpp::traits::input_parameter< List >::type strings1(strings1SEXP);
     Rcpp::traits::input_parameter< List >::type strings2(strings2SEXP);
-    rcpp_result_gen = Rcpp::wrap(correct_interleave(orig, strings1, strings2));
+    rcpp_result_gen = Rcpp::wrap(interleave_correctly(orig, strings1, strings2));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -200,11 +200,11 @@ static const R_CallMethodDef CallEntries[] = {
     {"_filesstrings_paste_collapse", (DL_FUNC) &_filesstrings_paste_collapse, 2},
     {"_filesstrings_paste_collapse_list_elems", (DL_FUNC) &_filesstrings_paste_collapse_list_elems, 2},
     {"_filesstrings_str_list_remove_empties", (DL_FUNC) &_filesstrings_str_list_remove_empties, 1},
-    {"_filesstrings_str_list_nth_elems", (DL_FUNC) &_filesstrings_str_list_nth_elems, 2},
-    {"_filesstrings_num_list_nth_elems", (DL_FUNC) &_filesstrings_num_list_nth_elems, 2},
+    {"_filesstrings_str_list_nth_elems_", (DL_FUNC) &_filesstrings_str_list_nth_elems_, 2},
+    {"_filesstrings_num_list_nth_elems_", (DL_FUNC) &_filesstrings_num_list_nth_elems_, 2},
     {"_filesstrings_interleave_strings", (DL_FUNC) &_filesstrings_interleave_strings, 2},
-    {"_filesstrings_correct_interleave_helper", (DL_FUNC) &_filesstrings_correct_interleave_helper, 3},
-    {"_filesstrings_correct_interleave", (DL_FUNC) &_filesstrings_correct_interleave, 3},
+    {"_filesstrings_interleave_correctly_vec", (DL_FUNC) &_filesstrings_interleave_correctly_vec, 3},
+    {"_filesstrings_interleave_correctly", (DL_FUNC) &_filesstrings_interleave_correctly, 3},
     {"_filesstrings_interleave_char_lists", (DL_FUNC) &_filesstrings_interleave_char_lists, 2},
     {"_filesstrings_intmat_list_nrows", (DL_FUNC) &_filesstrings_intmat_list_nrows, 1},
     {"_filesstrings_intmat_list_bind_nth_rows", (DL_FUNC) &_filesstrings_intmat_list_bind_nth_rows, 2},

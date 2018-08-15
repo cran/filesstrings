@@ -1,7 +1,7 @@
 Package: filesstrings
 Type: Package
 Title: Handy File and String Manipulation
-Version: 2.5.0
+Version: 2.6.0
 Authors@R: c(person("Rory", "Nolan", email = "rorynoolan@gmail.com", 
                     role = c("aut", "cre", "cph"),
                     comment = c(ORCID = "0000-0002-5239-4043")),
@@ -16,7 +16,7 @@ Encoding: UTF-8
 LazyData: true
 Imports: tibble, Rcpp, magrittr, tools, ore, matrixStats, purrr,
         checkmate, rlang
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 Suggests: testthat, covr, knitr, rmarkdown, dplyr
 LinkingTo: Rcpp
 Depends: stringr
@@ -25,8 +25,8 @@ URL: https://www.github.com/rorynolan/filesstrings
 BugReports: https://www.github.com/rorynolan/filesstrings/issues
 VignetteBuilder: knitr
 NeedsCompilation: yes
-Packaged: 2018-06-29 14:44:43 UTC; rnolan
+Packaged: 2018-08-15 20:54:38 UTC; rnolan
 Author: Rory Nolan [aut, cre, cph] (<https://orcid.org/0000-0002-5239-4043>),
   Sergi Padilla-Parra [ths] (<https://orcid.org/0000-0002-8010-9481>)
 Repository: CRAN
-Date/Publication: 2018-06-29 15:38:55 UTC
+Date/Publication: 2018-08-15 21:20:03 UTC
