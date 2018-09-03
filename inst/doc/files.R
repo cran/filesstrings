@@ -4,16 +4,6 @@ knitr::opts_chunk$set(echo = TRUE, comment = "#>")
 ## ----load----------------------------------------------------------------
 library(filesstrings)
 
-## ----create dir----------------------------------------------------------
-dir.create("tmp_dir")
-file.create("tmp.txt")
-
-## ----put a file in a dir-------------------------------------------------
-file.move("tmp.txt", "tmp_dir")
-
-## ---- remove directory---------------------------------------------------
-dir.remove("tmp_dir")
-
 ## ---- remove_filename_spaces---------------------------------------------
 file.create(c("file 1.txt", "file 2.txt"))
 remove_filename_spaces(pattern = "txt$", replacement = "_")

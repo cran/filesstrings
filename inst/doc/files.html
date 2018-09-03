@@ -12,7 +12,7 @@
 
 <meta name="author" content="Rory Nolan" />
 
-<meta name="date" content="2018-08-15" />
+<meta name="date" content="2018-09-03" />
 
 <title>Files</title>
 
@@ -280,70 +280,55 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Files</h1>
 <h4 class="author"><em>Rory Nolan</em></h4>
-<h4 class="date"><em>2018-08-15</em></h4>
+<h4 class="date"><em>2018-09-03</em></h4>
 
 
 
+<p>Here are some useful things which <code>filesstrings</code> makes easier than <code>base</code> or <code>fs</code>.</p>
 <p>First let’s load the library:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(filesstrings)</a></code></pre></div>
 <pre><code>#&gt; Loading required package: stringr</code></pre>
-<div id="move-files-around" class="section level2">
-<h2>Move files around</h2>
-<p>I find it bizarre that base R has no <code>file.move</code>. To move a file, you have to unintuitively rename it. <code>filesstrings</code> provides <code>file.move(files, destinations)</code>. This function has the nice feature that if you try to move files to a directory that doesn’t exist, it creates the directory first and then puts the files inside. Let’s create a directory and a file:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">dir.create</span>(<span class="st">&quot;tmp_dir&quot;</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">file.create</span>(<span class="st">&quot;tmp.txt&quot;</span>)</a></code></pre></div>
-<pre><code>#&gt; [1] TRUE</code></pre>
-<p>Now let’s put the file into the directory:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">file.move</span>(<span class="st">&quot;tmp.txt&quot;</span>, <span class="st">&quot;tmp_dir&quot;</span>)</a></code></pre></div>
-<pre><code>#&gt; 1 file moved. 0 failed.</code></pre>
-</div>
-<div id="delete-directories" class="section level2">
-<h2>Delete Directories</h2>
-<p>To delete directories with base R, one has to use <code>unlink(..., recursive = TRUE)</code>. The <code>filesstrings</code> package gives you <code>dir.remove()</code> which does the same job.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">dir.remove</span>(<span class="st">&quot;tmp_dir&quot;</span>)</a></code></pre></div>
-<pre><code>#&gt; 1 directory deleted. 0 failed to delete.</code></pre>
-</div>
 <div id="remove-spaces-from-file-names" class="section level2">
 <h2>Remove spaces from file names</h2>
 <p>“A space in your file name is a hole in your soul.” - Jenny Bryan</p>
 <p><code>remove_filename_spaces(replacement = &quot;_&quot;)</code> replaces them all with underscores for all files in a directory. By default, they are replaced with nothing.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">file.create</span>(<span class="kw">c</span>(<span class="st">&quot;file 1.txt&quot;</span>, <span class="st">&quot;file 2.txt&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">file.create</span>(<span class="kw">c</span>(<span class="st">&quot;file 1.txt&quot;</span>, <span class="st">&quot;file 2.txt&quot;</span>))</a></code></pre></div>
 <pre><code>#&gt; [1] TRUE TRUE</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">remove_filename_spaces</span>(<span class="dt">pattern =</span> <span class="st">&quot;txt$&quot;</span>, <span class="dt">replacement =</span> <span class="st">&quot;_&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">remove_filename_spaces</span>(<span class="dt">pattern =</span> <span class="st">&quot;txt$&quot;</span>, <span class="dt">replacement =</span> <span class="st">&quot;_&quot;</span>)</a></code></pre></div>
 <pre><code>#&gt; 2 files required renaming and this was done successfully.</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">list.files</span>(<span class="dt">pattern =</span> <span class="st">&quot;txt$&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">list.files</span>(<span class="dt">pattern =</span> <span class="st">&quot;txt$&quot;</span>)</a></code></pre></div>
 <pre><code>#&gt; [1] &quot;file_1.txt&quot; &quot;file_2.txt&quot;</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">file.remove</span>(<span class="kw">list.files</span>(<span class="dt">pattern =</span> <span class="st">&quot;txt$&quot;</span>))  <span class="co"># clean up</span></a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">file.remove</span>(<span class="kw">list.files</span>(<span class="dt">pattern =</span> <span class="st">&quot;txt$&quot;</span>))  <span class="co"># clean up</span></a></code></pre></div>
 <pre><code>#&gt; [1] TRUE TRUE</code></pre>
 </div>
 <div id="messed-up-file-numbering" class="section level2">
 <h2>Messed up file numbering</h2>
 <p>The microscope I use numbers files with 3 numbers by default, i.e. <code>file001.tif</code>, <code>file002.tif</code> and so on. This is a problem when the automatic numbering passes 1000, whereby we have <code>file999.tif</code>, <code>file1000.tif</code>. What’s the problem with this? Well, sometimes you need alphabetical order to reflect the true order of your files. These file numbers don’t satisfy this requirement:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">file.names &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;file999.tif&quot;</span>, <span class="st">&quot;file1000.tif&quot;</span>)</a>
-<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="kw">sort</span>(file.names)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">file.names &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;file999.tif&quot;</span>, <span class="st">&quot;file1000.tif&quot;</span>)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">sort</span>(file.names)</a></code></pre></div>
 <pre><code>#&gt; [1] &quot;file1000.tif&quot; &quot;file999.tif&quot;</code></pre>
 <p>so <code>file1000.tif</code> comes before <code>file999.tif</code> in alphabetical order. The function <code>nice_nums()</code> returns the names that we’d like them to have:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">nice_nums</span>(file.names)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">nice_nums</span>(file.names)</a></code></pre></div>
 <pre><code>#&gt; [1] &quot;file0999.tif&quot; &quot;file1000.tif&quot;</code></pre>
 <p>The function <code>nice_file_nums</code> applies such renaming to all the files in an entire directory. It wraps <code>nice_nums</code>.</p>
 </div>
 <div id="the-name-of-a-file-without-the-extension" class="section level2">
 <h2>The name of a file without the extension</h2>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">before_last_dot</span>(<span class="st">&quot;spreadsheet_92.csv&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">before_last_dot</span>(<span class="st">&quot;spreadsheet_92.csv&quot;</span>)</a></code></pre></div>
 <pre><code>#&gt; [1] &quot;spreadsheet_92&quot;</code></pre>
 </div>
 <div id="ensure-that-a-file-name-has-a-given-extension" class="section level2">
 <h2>Ensure that a file name has a given extension</h2>
 <p>Add a file extension if needed:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">give_ext</span>(<span class="st">&quot;xyz&quot;</span>, <span class="st">&quot;csv&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">give_ext</span>(<span class="st">&quot;xyz&quot;</span>, <span class="st">&quot;csv&quot;</span>)</a></code></pre></div>
 <pre><code>#&gt; [1] &quot;xyz.csv&quot;</code></pre>
 <p>If the file name has the correct extension already, it’s left alone:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">give_ext</span>(<span class="st">&quot;xyz.csv&quot;</span>, <span class="st">&quot;csv&quot;</span>)  </a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">give_ext</span>(<span class="st">&quot;xyz.csv&quot;</span>, <span class="st">&quot;csv&quot;</span>)  </a></code></pre></div>
 <pre><code>#&gt; [1] &quot;xyz.csv&quot;</code></pre>
 <p>Change a file extension:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">give_ext</span>(<span class="st">&quot;abc.csv&quot;</span>, <span class="st">&quot;txt&quot;</span>)  <span class="co"># tack the new extension onto the end</span></a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">give_ext</span>(<span class="st">&quot;abc.csv&quot;</span>, <span class="st">&quot;txt&quot;</span>)  <span class="co"># tack the new extension onto the end</span></a></code></pre></div>
 <pre><code>#&gt; [1] &quot;abc.csv.txt&quot;</code></pre>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">give_ext</span>(<span class="st">&quot;abc.csv&quot;</span>, <span class="st">&quot;txt&quot;</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>)  <span class="co"># replace the current extension</span></a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">give_ext</span>(<span class="st">&quot;abc.csv&quot;</span>, <span class="st">&quot;txt&quot;</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>)  <span class="co"># replace the current extension</span></a></code></pre></div>
 <pre><code>#&gt; [1] &quot;abc.txt&quot;</code></pre>
 </div>
 
