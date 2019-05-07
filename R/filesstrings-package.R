@@ -1,17 +1,10 @@
 #' @import stringr
 #' @importFrom magrittr '%>%' '%<>%' '%T>%'
-#' @useDynLib filesstrings, .registration = TRUE
-#' @importFrom Rcpp sourceCpp
-#' @importFrom strex match_arg
 NULL
 
 ## quiets concerns of R CMD check re: the .'s that appear in pipelines
 if (getRversion() >= "2.15.1") {
   utils::globalVariables(c("."))
-}
-
-.onUnload <- function(libpath) {
-  library.dynam.unload("filesstrings", libpath)
 }
 
 #' `filesstrings`: handy file and string manipulation
