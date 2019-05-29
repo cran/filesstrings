@@ -1,7 +1,7 @@
 Package: filesstrings
 Type: Package
 Title: Handy File and String Manipulation
-Version: 3.1.1
+Version: 3.1.2
 Authors@R: c(person("Rory", "Nolan", email = "rorynoolan@gmail.com", 
                     role = c("aut", "cre", "cph"),
                     comment = c(ORCID = "0000-0002-5239-4043")),
@@ -30,8 +30,8 @@ BugReports: https://www.github.com/rorynolan/filesstrings/issues
 VignetteBuilder: knitr
 Language: en-US
 NeedsCompilation: no
-Packaged: 2019-05-14 12:20:37 UTC; rnolan
+Packaged: 2019-05-29 06:35:35 UTC; rnolan
 Author: Rory Nolan [aut, cre, cph] (<https://orcid.org/0000-0002-5239-4043>),
   Sergi Padilla-Parra [ths] (<https://orcid.org/0000-0002-8010-9481>)
 Repository: CRAN
-Date/Publication: 2019-05-14 13:30:02 UTC
+Date/Publication: 2019-05-29 07:10:03 UTC
