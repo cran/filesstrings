@@ -1,5 +1,3 @@
-context("Utils")
-
 test_that("all_equal works", {
   expect_true(all_equal(1, rep(1, 3)))
   expect_true(all_equal(rep(1, 3), 1))
@@ -34,34 +32,4 @@ test_that("group_close works", {
   expect_error(group_close(rep(1, 2)))
   expect_equal(group_close(0), list(0))
   expect_equal(group_close(c(0, 2)), list(0, 2))
-})
-
-test_that("match_arg() works", {
-  expect_equal(match_arg("ab", c("abcdef", "defgh")), "abcdef")
-  expect_error(match_arg("abcdefg", c("Abcdef", "defg")), "not a prefix of any")
-  expect_equal(
-    match_arg("ab", c("Abcdef", "defgh"), ignore_case = TRUE),
-    "Abcdef"
-  )
-  expect_equal(match_arg("ab", c("xyz", "Abcdef", "defgh"),
-    ignore_case = TRUE, index = TRUE
-  ), 2)
-  choices <- c("Apples", "Pears", "Bananas", "Oranges")
-  expect_equal(match_arg("A", choices), "Apples")
-  expect_equal(match_arg("B", choices, index = TRUE), 3)
-  expect_equal(
-    match_arg(c("b", "a"), choices,
-      several_ok = TRUE,
-      ignore_case = TRUE
-    ),
-    c("Bananas", "Apples")
-  )
-  expect_equal(
-    match_arg(c("b", "a"), choices,
-      ignore_case = TRUE, index = TRUE,
-      several_ok = TRUE
-    ),
-    c(3, 1)
-  )
-  expect_equal(match_arg("ab", c("ab", "abc")), "ab")
 })
