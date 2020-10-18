@@ -1,6 +1,6 @@
-9f8674a247b8035e93f5a858345f237e *DESCRIPTION
+5414ff69f1e4ea5d26016fd4173fd738 *DESCRIPTION
 6ac12302f9e67cfd9b531407ec743d4b *NAMESPACE
-3a3d51c4f2d26a5e5b193c24d7be5c23 *NEWS.md
+843b0f59adf64fcfe73e64f0c2837839 *NEWS.md
 1f4a934e9e3364feeb8a655b7cb674eb *R/all-equal.R
 7c8565010b20ebfcb497f2492e1d8161 *R/arg-match.R
 4e9115323fd10753e125576849111627 *R/argument-checking.R
@@ -29,13 +29,13 @@ f977e232dbc42e976a35cd1d7bf0afe5 *R/str-to-vec.R
 5531792a6253980503816d350b217459 *R/str-trim.R
 d7130d651264e2b03f96a3aceb44f61c *R/utils.R
 7996dc15d3ab0b03b2ae31cf29a6eb62 *README.md
-0902b2920b58cb692e2becbeb712063c *build/partial.rdb
+fd1580443ef5bda4c587998658a95939 *build/partial.rdb
 05f16dd4815c17f0655135f759ff16da *build/vignette.rds
 f9314a951a32ce1a58c15834b3e1ecf9 *inst/CITATION
 c29a4db8b9c7ce5b3f18021fef02cdcd *inst/WORDLIST
 e55557514ecdd85f1d9f6b779957c2a8 *inst/doc/files.R
 53481a88ef4d25348f1716a8a58125be *inst/doc/files.Rmd
-5589f34f3a963df0b9251943e2abfa64 *inst/doc/files.html
+e716f8952ad23d53d62ac7a1da6c2621 *inst/doc/files.html
 a105783aec736e6ec53fcfdfc119b952 *man/all_equal.Rd
 5b4f13d4701388dcff44978f31e5b94a *man/before_last_dot.Rd
 9c4a8450d3beaa2976b57cc912849586 *man/can_be_numeric.Rd
