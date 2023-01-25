@@ -1,6 +1,6 @@
-6fdfb4f01743d60da648f6a1ca18f5e1 *DESCRIPTION
+cb75364b58a9644958afb17574629ae4 *DESCRIPTION
 6ac12302f9e67cfd9b531407ec743d4b *NAMESPACE
-bd60ce2dc6b223b454a6dc0732e2c366 *NEWS.md
+2c375f911a3e8f24ca3c463d39374cf0 *NEWS.md
 1f4a934e9e3364feeb8a655b7cb674eb *R/all-equal.R
 7c8565010b20ebfcb497f2492e1d8161 *R/arg-match.R
 4e9115323fd10753e125576849111627 *R/argument-checking.R
@@ -35,7 +35,7 @@ f9314a951a32ce1a58c15834b3e1ecf9 *inst/CITATION
 9e08dbe731257b4ece2ad4ca45283856 *inst/WORDLIST
 e55557514ecdd85f1d9f6b779957c2a8 *inst/doc/files.R
 53481a88ef4d25348f1716a8a58125be *inst/doc/files.Rmd
-f6f48b3ae24fbe378688601c61ab12c3 *inst/doc/files.html
+98d68510513923ac75fce37dd7f65177 *inst/doc/files.html
 a105783aec736e6ec53fcfdfc119b952 *man/all_equal.Rd
 5b4f13d4701388dcff44978f31e5b94a *man/before_last_dot.Rd
 9c4a8450d3beaa2976b57cc912849586 *man/can_be_numeric.Rd
