@@ -4,7 +4,7 @@ knitr::opts_chunk$set(echo = TRUE, comment = "#>")
 ## ----load---------------------------------------------------------------------
 library(filesstrings)
 
-## ---- remove_filename_spaces--------------------------------------------------
+## ----remove_filename_spaces---------------------------------------------------
 file.create(c("file 1.txt", "file 2.txt"))
 remove_filename_spaces(pattern = "txt$", replacement = "_")
 list.files(pattern = "txt$")
